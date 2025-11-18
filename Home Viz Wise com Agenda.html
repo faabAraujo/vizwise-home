@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Home | Viz Wise</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/?size=100&id=bMOitNfx1Qs9&format=png&color=c6c6c6">
+    
+   <style>
+        /* Fonts */
+          body {
+            font-family: 'Poppins', sans-serif !important;
+        }
+
+        /* Animations */
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Elements */
+        a {
+            text-decoration: none;
+        }
+
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-weight: 300;
+        }
+
+        body {
+            align-items: center;
+            background-color: #131314;
+            color: #ddd;
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            animation-duration: 1s;
+            animation-name: fade-in;
+            font-family: Poppins, sans-serif;
+            margin: auto;
+            width: 100%;
+        }
+        h2 {
+            font-weight: bolder;
+        }
+
+        hr {
+            color: white;
+            width: 50%;
+        }
+
+        /* Classes */
+        .links-container {
+            width: 100%;
+        }
+
+        .link-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            overflow-y: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px 2px #101011;
+            cursor: grab;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .pr {
+            background-color: #202838;
+            border: 3px #3d73f2 solid;
+        }
+
+        .ms {
+            background-color: #233427;
+            border: 3px #41a25a solid;
+        }
+
+        .mg {
+            background-color: #8e44ad33;
+            border: 3px #8e44ad solid;
+        }
+        .al {
+            background-color: #323232;
+            border: 3px #c6c6c6 solid;
+        }
+
+        .ba {
+            background-color: #382631;
+            border: 3px #ef64b9 solid;
+        }
+
+        .re {
+            background-color: #372b24;
+            border: 3px #ea864a solid;
+        }
+
+        .ger {
+            background-color: #352020;
+            border: 3px #df3b3b solid;
+        }
+
+        .av {
+            background-color: #242035;
+            border: 3px #593bdf solid;
+        }       
+
+        .link-section:active {
+            cursor: grabbing;
+        }
+        
+         .dragging {
+            opacity: 0.1;
+            box-shadow: 0 0 10px 2px #101011;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        
+        .link-section-title {
+            font-size: 20px;
+            margin: 0;
+            padding: 2.5%;
+            text-align: center;
+        }
+
+        .link-list {
+            padding: 0;
+        }
+
+        .link-list-item {
+            align-items: center;
+            display: flex;
+            height: 1.5em;
+            justify-content: center;
+            line-height: 2em;
+            list-style-type: none;
+            margin: 1vh 0 1vh 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        .link-list-item:hover {
+            text-shadow:
+            2px 2px 4px #1c1d1f,
+            0 0 2em #282a2c,
+            0 0 0.5em white;
+        }
+
+        .link {
+            color: #ddd;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .aviso-italic {
+            font-weight: 300;
+            font-style: italic;
+            margin: 0;
+        }
+
+        /* IDs */
+        #links-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-row-gap: 5vh;
+            padding: 2vh 5vw;
+        }
+
+
+        #calendar-container {
+            padding: 2vh 5vw 0 5vw; /* Espaçamento igual aos links, mas sem preenchimento inferior */
+            text-align: center; /* Centraliza o iframe na tela */
+        }
+        #clock {
+            font-family: Roboto, sans-serif;
+        }
+
+        #top-div {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr;
+            grid-column-end: 5;
+            grid-column-start: 1;
+            text-align: center;
+            padding: 0 5vw 0 5vw;
+        }
+
+        #search-form,
+        #clock-div {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            gap: 60%;
+        }
+        
+        #search-bar-wrapper {
+            display: inline-block;
+            position: relative;
+            width: 100%;
+        }
+
+        #search-bar,
+        #search-bar-btn {
+            background-color: #282a2c;
+            border-color: #1c1d1f;
+            border-style: solid;
+            border-width: 2px;
+        }
+
+        #search-bar {
+            box-shadow: 0 0 10px 2px #101011;
+            box-sizing: border-box;
+            border-radius: 30px;
+            color: #ddd;
+            font-size: 16px;
+            height: 25px;
+            padding: 25px 25px 25px 25px;
+            text-align: center;
+            width: 100%;
+            transition: background-color 0.3s, border-color 0.3s ease-in-out;
+        }
+
+        #search-bar-btn {
+            display: inline-block;
+            align-self: center;
+            font-size: 16px;
+            height: 25px;
+            padding: 0 0 0 0;
+            position: absolute;
+            right: 10px;
+            top: 17px;
+            width: 25px;
+            border: none;
+        }
+
+        #search-bar:focus,
+        #search-bar:focus+#search-bar-btn {
+            background: #1c1d1f;
+        }
+
+        #search-bar:hover{
+            border: 2px #c6c6c6 solid;
+            transition: background-color 0.5s, border-color 0.5s ease-in-out;
+        }
+
+        #search-bar:active{
+            border: 2px #c6c6c6 solid;
+        }
+
+        #links-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-row-gap: 5vh;
+            padding: 2vh 5vw;
+        }
+
+        /* NOVO - Estilos para os botões e a classe para ocultar */
+        #button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .toggle-btn {
+            background-color: #282a2c;
+            color: #ddd;
+            border: 2px solid #555;
+            border-radius: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background-color: #3a3c3e;
+            border-color: #c6c6c6;
+        }
+
+        .hidden {
+              display: none !important;
+        }
+        /* FIM DO NOVO CSS */
+
+
+        /* Media Queries */
+        @media only screen and (min-width: 600px) {
+
+            #links-container {
+                column-gap: 3vw;
+                grid-column-gap: 3vw;
+                grid-row-gap: 5vh;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 1fr 1fr;
+                row-gap: 5vh;
+            }
+
+        }
+
+        @media only screen and (min-width: 768px) {
+
+            #links-container {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                grid-template-rows: 1fr;
+            }
+
+        }
+
+        @media only screen and (min-width: 1200px) {
+
+            #top-div {
+                padding: 0 15vw 0 15vw;
+            }
+
+            #links-container {
+                padding: 2vh 15vw 2vh 15vw;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div id="top-div">
+            <div id="clock-div">
+                <div>
+                    <img src="https://pr.vizwise.com.br/financeiro/assets/images/logo.svg" alt="Logo Viz">
+                </div>
+                <h1 id="clock">
+                    00/00/0000
+                    00:00:00
+                </h1>
+            </div>
+            <form id="search-form" action="https://www.google.com/search">
+                <div id="search-bar-wrapper">
+                    <input id="search-bar" name="q" type="text" title="Search" placeholder="Pesquise no Google"/>
+                    <button id="search-bar-btn" type="submit"><svg style="height:1em;" viewBox="0 0 12 13"><g stroke-width="2" stroke="white" fill="none"><path d="M11.29 11.71l-4-4"/><circle cx="5" cy="5" r="4"/></g></svg></button>
+                </div>
+            </form>
+            
+            <div id="button-container">
+                <button id="toggle-calendar-btn" class="toggle-btn">+ Google Agenda</button>
+                <button id="toggle-cards-btn" class="toggle-btn">+ Cards</button>
+            </div>
+            <div>
+                <h5 class="aviso-italic">Para reorganizar os itens como preferir, basta clicar e segurar sobre o nome e arrastá-lo.</h5>
+            </div>
+        </div>
+
+        <div id="calendar-container" class="hidden">
+            <iframe 
+                src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&showPrint=0&src=bWF0aGV1cy52aXp3aXNlQGdtYWlsLmNvbQ&src=cHQuYnJhemlsaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY_Y29t&src=ZmFiaWFub2Zhc3RzaXN0ZW1hc0BnbWFpbC5jb20&color=%23039be5&color=%230b8043&color=%237cb342&bgcolor=%23131314" 
+                style="border: 1px solid #333; border-radius: 10px; width: 100%; max-width: 1200px;" 
+                height="600" 
+                frameborder="0" 
+                scrolling="no">
+            </iframe>
+        </div>
+              <div id="links-container" class="hidden">
+                      <section class="link-section pr">
+                <h2 class="link-section-title">PARANÁ</h2>
+                <hr/>
+                <ul class="link-list">
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://pr.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://pr.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://pr.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://pr.vizwise.com.br/rcpn/open.do?action=open&sys=RCP">RCPN</a></li>
+                </ul>
+            </section>
+            <section class="link-section ms">
+                <h2 class="link-section-title">MATO GROSSO DO SUL</h2>
+                <hr />
+                <ul class="link-list">
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://ms.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://ms.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://ms.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://ms.vizwise.com.br/senha/open.do?sys=SEN">Senhas</a></li>
+                </ul>
+            </section>
+            <section class="link-section mg">
+                <h2 class="link-section-title">MINAS GERAIS</h2>
+                <hr/>
+                <ul class="link-list">
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://mg.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
+                </ul>
+            </section>
+            <section class="link-section al">
+                <h2 class="link-section-title">ALAGOAS</h2>
+                <hr />
+                <ul class="link-list">
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://al.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://al.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://al.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a></li>
+                </ul>
+            </section>
+            <section class="link-section ba">
+                <h2 class="link-section-title">LINKS</h2>
+                <hr />
+                <ul class="link-list">
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://drive.google.com/drive/folders/1WJykw18G3YTD0hMBs_oSLKY9AVr2p0Pg?usp=drive_link">Drive Sistemas</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://docs.google.com/spreadsheets/d/1rOkWRdZIWi3x9gv0sy558I9aM_dZdaXTTsqinfVqDUY/edit?usp=drive_link">Links Úteis</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://drive.google.com/drive/folders/1s1Bd4Qacp1LravulgEnUoMUsIVL38tWg?usp=drive_link">Manuais</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://drive.google.com/drive/folders/1Uc9b5isCkuQRWmnf1x32CmoquiN6xe5L?usp=drive_link">Drive Vídeos</a></li>
+                </ul>
+            </section>
+            <section class="link-section ger">
+                <h2 class="link-section-title">CHATS</h2>
+                <hr/>
+                <ul class="link-list">
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://web.whatsapp.com/">WhatsApp</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://appchat.vizwise.com.br/#/atendimento">VizChat</a></li>
+                </ul>
+            </section>
+            <section class="link-section av">
+                <h2 class="link-section-title">SISTEMAS AVULSOS</h2>
+                <hr/>
+                <ul class="link-list">
+                    <li class="link-list-item"><a class="link" target="_blank" title="A senha para acesso está no drive." href="http://al.vizwise.com.br:3000">Uso do Servidor</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://ms.vizwise.com.br/servicos/open.do?sys=SER">Pedido de Certidão</a></li>
+                    <li class="link-list-item"><a class="link" target="_blank" href="https://reg.vizwise.com.br/sistemas/open.do?sys=SOL">Requisições</a></li>
+                </ul>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        const clockInterval = 100;
+        const searchEngineUrl = 'https://www.google.com/search?q=';
+        const tabKeyCode = 9;
+        const enterKeyCode = 13;
+        const escapeKeyCode = 27;
+        const searchBarElement = document.getElementById('search-bar');
+        const clockElement = document.getElementById('clock');
+        const formElement = document.getElementById('search-form');
+
+        const monthNames = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+
+        function getDateTime() {
+            const dateTime = new Date();
+            let day = dateTime.getDate();
+            let month = monthNames[dateTime.getMonth()];
+            let year = dateTime.getFullYear();
+            let hour = dateTime.getHours();
+            let minutes = dateTime.getMinutes();
+            let seconds = dateTime.getSeconds();
+
+            if (hour < 0) {
+                hour = 24 + hour;
+            }
+
+            let date = (day < 10 ? '0' + day : day) + ' ' + month + ' ' + year;
+            let time = (hour < 10 ? '0' + hour : hour) + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+
+            return date + '\n' + time;
+        }
+
+        function setClock() {
+            clockElement.innerText = getDateTime();
+        }
+
+        function search() {
+            let value = searchBarElement.value;
+            if (!value) {
+                return;
+            }
+
+            if (value.startsWith('https://') || value.startsWith('http://')) {
+                window.location = value;
+            } else {
+                window.location = searchEngineUrl + encodeURIComponent(value);
+            }
+        }
+
+        setClock();
+
+        setInterval(() => {
+            setClock();
+        }, clockInterval);
+
+        searchBarElement.focus();
+        searchBarElement.value = '';
+
+        formElement.addEventListener('submit', (ev) => {
+            ev.preventDefault();
+            search();
+        });
+
+        document.addEventListener('keypress', (event) => {
+            if (event.keyCode == escapeKeyCode) {
+                searchBarElement.blur();
+                searchBarElement.value = '';
+            } else if (event.keyCode != tabKeyCode && event.keyCode != enterKeyCode) {
+                searchBarElement.focus();
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById("links-container");
+            let draggedItem = null;
+            let originalNextSibling = null;
+            let originalParent = null;
+            
+            function onDragStart(event) {
+                draggedItem = event.target.closest(".link-section");
+                originalNextSibling = draggedItem.nextElementSibling;
+                originalParent = draggedItem.parentElement;
+                
+                draggedItem.classList.add("dragging");
+                draggedItem.style.opacity = "0"; // Mantém o espaço vazio
+            }
+            
+            function onDragOver(event) {
+                event.preventDefault();
+                const hoveringOver = event.target.closest(".link-section");
+                if (hoveringOver && hoveringOver !== draggedItem) {
+                    let bounding = hoveringOver.getBoundingClientRect();
+                    let offset = event.clientY - bounding.top;
+                    if (offset > bounding.height / 2) {
+                        hoveringOver.after(draggedItem);
+                    } else {
+                        hoveringOver.before(draggedItem);
+                    }
+                }
+            }
+            
+            function onDragEnd() {
+                if (draggedItem) {
+                    draggedItem.classList.remove("dragging");
+                    draggedItem.style.opacity = "1";
+                    draggedItem = null;
+                }
+            }
+            
+            document.querySelectorAll(".link-section-title").forEach(title => {
+                title.style.cursor = "grab";
+                title.addEventListener("mousedown", (event) => {
+                    event.preventDefault();
+                    onDragStart(event);
+                    container.addEventListener("mousemove", onDragOver);
+                    document.addEventListener("mouseup", () => {
+                        onDragEnd();
+                        container.removeEventListener("mousemove", onDragOver);
+                    }, { once: true });
+                });
+            });
+
+            // NOVO - Lógica para os botões de toggle
+            const toggleCalendarBtn = document.getElementById('toggle-calendar-btn');
+            const toggleCardsBtn = document.getElementById('toggle-cards-btn');
+            const calendarContainer = document.getElementById('calendar-container');
+            const linksContainer = document.getElementById('links-container');
+
+            toggleCalendarBtn.addEventListener('click', () => {
+                calendarContainer.classList.toggle('hidden');
+            });
+
+            toggleCardsBtn.addEventListener('click', () => {
+                linksContainer.classList.toggle('hidden');
+            });
+            // FIM DA NOVA LÓGICA
+        });
+    </script>
+</html>
