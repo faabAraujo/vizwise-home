@@ -6,12 +6,17 @@
     <title>Home | Viz Wise</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/?size=100&id=bMOitNfx1Qs9&format=png&color=c6c6c6">
-    
-   <style>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <link rel="icon" type="image/x-icon"
+        href="https://img.icons8.com/?size=100&id=bMOitNfx1Qs9&format=png&color=c6c6c6">
+
+    <style>
         /* Fonts */
-          body {
+        body {
             font-family: 'Poppins', sans-serif !important;
         }
 
@@ -55,7 +60,11 @@
             font-family: Poppins, sans-serif;
             margin: auto;
             width: 100%;
+            /* Permite rolagem se o conteúdo exceder a tela */
+            max-height: 100vh;
+            overflow-y: auto;
         }
+
         h2 {
             font-weight: bolder;
         }
@@ -96,6 +105,7 @@
             background-color: #8e44ad33;
             border: 3px #8e44ad solid;
         }
+
         .al {
             background-color: #323232;
             border: 3px #c6c6c6 solid;
@@ -119,18 +129,18 @@
         .av {
             background-color: #242035;
             border: 3px #593bdf solid;
-        }       
+        }
 
         .link-section:active {
             cursor: grabbing;
         }
-        
-         .dragging {
+
+        .dragging {
             opacity: 0.1;
             box-shadow: 0 0 10px 2px #101011;
             transition: transform 0.5s ease, opacity 0.5s ease;
         }
-        
+
         .link-section-title {
             font-size: 20px;
             margin: 0;
@@ -156,9 +166,9 @@
 
         .link-list-item:hover {
             text-shadow:
-            2px 2px 4px #1c1d1f,
-            0 0 2em #282a2c,
-            0 0 0.5em white;
+                2px 2px 4px #1c1d1f,
+                0 0 2em #282a2c,
+                0 0 0.5em white;
         }
 
         .link {
@@ -179,14 +189,16 @@
             display: grid;
             grid-template-columns: 1fr;
             grid-row-gap: 5vh;
-            padding: 2vh 5vw;
+            /* Padding definido na animação para evitar pulos */
         }
 
 
         #calendar-container {
-            padding: 2vh 5vw 0 5vw; /* Espaçamento igual aos links, mas sem preenchimento inferior */
-            text-align: center; /* Centraliza o iframe na tela */
+            /* Padding ajustado na classe de animação */
+            text-align: center;
+            overflow: hidden;
         }
+
         #clock {
             font-family: Roboto, sans-serif;
         }
@@ -198,7 +210,7 @@
             grid-column-end: 5;
             grid-column-start: 1;
             text-align: center;
-            padding: 0 5vw 0 5vw;
+            padding: 0 2vw 0 2vw;
         }
 
         #search-form,
@@ -208,7 +220,7 @@
             justify-content: center;
             gap: 60%;
         }
-        
+
         #search-bar-wrapper {
             display: inline-block;
             position: relative;
@@ -254,23 +266,16 @@
             background: #1c1d1f;
         }
 
-        #search-bar:hover{
+        #search-bar:hover {
             border: 2px #c6c6c6 solid;
             transition: background-color 0.5s, border-color 0.5s ease-in-out;
         }
 
-        #search-bar:active{
+        #search-bar:active {
             border: 2px #c6c6c6 solid;
         }
 
-        #links-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-row-gap: 5vh;
-            padding: 2vh 5vw;
-        }
-
-        /* NOVO - Estilos para os botões e a classe para ocultar */
+        /* NOVO - Estilos para os botões e animação */
         #button-container {
             display: flex;
             justify-content: center;
@@ -287,16 +292,56 @@
             cursor: pointer;
             font-family: 'Poppins', sans-serif;
             font-size: 14px;
-            transition: background-color 0.3s, border-color 0.3s;
+            transition: all 0.3s ease;
         }
 
         .toggle-btn:hover {
             background-color: #3a3c3e;
             border-color: #c6c6c6;
+            transform: translateY(-2px);
         }
 
-        .hidden {
-              display: none !important;
+        .toggle-btn.active {
+            background-color: #d6be91;
+            border-color: #d6be91;
+            color: white;
+        }
+
+        /* LÓGICA DE ANIMAÇÃO ELEGANTE */
+        .animatable-container {
+            /* Estado Expandido (Padrão) */
+            max-height: 2500px; /* Valor alto para garantir que o conteúdo caiba */
+            opacity: 1;
+            overflow: hidden;
+            transform: translateY(0);
+            
+            /* Transição suave cúbica */
+            transition: 
+                max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.6s ease-in-out,
+                padding 0.6s ease,
+                transform 0.6s ease;
+        }
+
+        /* Ajustes específicos para manter o layout original quando aberto */
+        #calendar-container.animatable-container {
+            padding: 2vh 5vw 0 5vw;
+        }
+        
+        #links-container.animatable-container {
+            padding: 2vh 5vw;
+        }
+
+        /* Estado Colapsado (Escondido) */
+        .animatable-container.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            transform: translateY(-20px); /* Leve deslize para cima ao fechar */
+            pointer-events: none; /* Evita cliques enquanto invisível */
         }
         /* FIM DO NOVO CSS */
 
@@ -327,10 +372,10 @@
         @media only screen and (min-width: 1200px) {
 
             #top-div {
-                padding: 0 15vw 0 15vw;
+                padding: 0 10vw 0 10vw;
             }
 
-            #links-container {
+            #links-container.animatable-container {
                 padding: 2vh 15vw 2vh 15vw;
             }
 
@@ -352,91 +397,168 @@
             </div>
             <form id="search-form" action="https://www.google.com/search">
                 <div id="search-bar-wrapper">
-                    <input id="search-bar" name="q" type="text" title="Search" placeholder="Pesquise no Google"/>
-                    <button id="search-bar-btn" type="submit"><svg style="height:1em;" viewBox="0 0 12 13"><g stroke-width="2" stroke="white" fill="none"><path d="M11.29 11.71l-4-4"/><circle cx="5" cy="5" r="4"/></g></svg></button>
+                    <input id="search-bar" name="q" type="text" title="Search" placeholder="Pesquise no Google" />
+
+                    <button id="search-bar-btn" type="submit"><svg style="height:1em;" viewBox="0 0 12 
+13">
+                            <g stroke-width="2" stroke="white" fill="none">
+                                <path d="M11.29 11.71l-4-4" />
+                                <circle cx="5" cy="5" r="4" />
+                            </g>
+                        </svg></button>
                 </div>
             </form>
-            
+
             <div id="button-container">
+                <!-- Adicionei IDs e removi classes desnecessárias -->
                 <button id="toggle-calendar-btn" class="toggle-btn">+ Google Agenda</button>
                 <button id="toggle-cards-btn" class="toggle-btn">+ Cards</button>
             </div>
             <div>
-                <h5 class="aviso-italic">Para reorganizar os itens como preferir, basta clicar e segurar sobre o nome e arrastá-lo.</h5>
+
+                <h5 class="aviso-italic">Para reorganizar os
+                    itens como preferir, basta clicar e segurar sobre o nome e
+                    arrastá-lo.</h5>
             </div>
         </div>
 
-        <div id="calendar-container" class="hidden">
-            <iframe 
-                src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&showPrint=0&src=bWF0aGV1cy52aXp3aXNlQGdtYWlsLmNvbQ&src=cHQuYnJhemlsaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY_Y29t&src=ZmFiaWFub2Zhc3RzaXN0ZW1hc0BnbWFpbC5jb20&color=%23039be5&color=%230b8043&color=%237cb342&bgcolor=%23131314" 
-                style="border: 1px solid #333; border-radius: 10px; width: 100%; max-width: 1200px;" 
-                height="600" 
-                frameborder="0" 
-                scrolling="no">
+        <!-- Adicionei as classes animatable-container e collapsed (estado inicial fechado) -->
+        <div id="calendar-container" class="animatable-container collapsed">
+            <iframe
+                src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&showPrint=0&src=bWF0aGV1cy52aXp3aXNlQGdtYWlsLmNvbQ&src=cHQuYnJhemlsaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY_Y29t&src=ZmFiaWFub2Zhc3RzaXN0ZW1hc0BnbWFpbC5jb20&color=%23039be5&color=%230b8043&color=%237cb342&bgcolor=%23131314"
+                style="border: 1px solid #333; border-radius: 10px; width: 100%; max-width: 1200px;" height="600"
+                frameborder="0" scrolling="no">
             </iframe>
         </div>
-              <div id="links-container" class="hidden">
-                      <section class="link-section pr">
+
+        <!-- Adicionei as classes animatable-container e collapsed (estado inicial fechado) -->
+        <div id="links-container" class="animatable-container collapsed">
+            <section class="link-section pr">
                 <h2 class="link-section-title">PARANÁ</h2>
-                <hr/>
+                <hr />
                 <ul class="link-list">
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://pr.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://pr.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://pr.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://pr.vizwise.com.br/rcpn/open.do?action=open&sys=RCP">RCPN</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://pr.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
+
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://pr.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
+
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://pr.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a>
+                    </li>
+
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://pr.vizwise.com.br/rcpn/open.do?action=open&sys=RCP">RCPN</a></li>
+
                 </ul>
             </section>
             <section class="link-section ms">
                 <h2 class="link-section-title">MATO GROSSO DO SUL</h2>
                 <hr />
                 <ul class="link-list">
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://ms.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://ms.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://ms.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://ms.vizwise.com.br/senha/open.do?sys=SEN">Senhas</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://ms.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
+
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://ms.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
+
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://ms.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a>
+                    </li>
+
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://ms.vizwise.com.br/senha/open.do?sys=SEN">Senhas</a></li>
+
                 </ul>
             </section>
             <section class="link-section mg">
                 <h2 class="link-section-title">MINAS GERAIS</h2>
-                <hr/>
+                <hr />
                 <ul class="link-list">
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://mg.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://mg.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
+
                 </ul>
             </section>
             <section class="link-section al">
                 <h2 class="link-section-title">ALAGOAS</h2>
                 <hr />
                 <ul class="link-list">
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://al.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://al.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://al.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://al.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
+
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://al.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
+
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://al.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a>
+                    </li>
+
                 </ul>
             </section>
             <section class="link-section ba">
                 <h2 class="link-section-title">LINKS</h2>
                 <hr />
                 <ul class="link-list">
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://drive.google.com/drive/folders/1WJykw18G3YTD0hMBs_oSLKY9AVr2p0Pg?usp=drive_link">Drive Sistemas</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://docs.google.com/spreadsheets/d/1rOkWRdZIWi3x9gv0sy558I9aM_dZdaXTTsqinfVqDUY/edit?usp=drive_link">Links Úteis</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://drive.google.com/drive/folders/1s1Bd4Qacp1LravulgEnUoMUsIVL38tWg?usp=drive_link">Manuais</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://drive.google.com/drive/folders/1Uc9b5isCkuQRWmnf1x32CmoquiN6xe5L?usp=drive_link">Drive Vídeos</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://drive.google.com/drive/folders/1WJykw18G3YTD0hMBs_oSLKY9AVr2p0Pg?usp=drive_link">Drive
+                            Sistemas</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://docs.google.com/spreadsheets/d/1rOkWRdZIWi3x9gv0sy558I9aM_dZdaXTTsqinfVqDUY/edit?usp=drive_link">Links
+                            Úteis</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://drive.google.com/drive/folders/1s1Bd4Qacp1LravulgEnUoMUsIVL38tWg?usp=drive_link">Manuais</a>
+                    </li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://drive.google.com/drive/folders/1Uc9b5isCkuQRWmnf1x32CmoquiN6xe5L?usp=drive_link">Drive
+                            Vídeos</a></li>
                 </ul>
             </section>
             <section class="link-section ger">
                 <h2 class="link-section-title">CHATS</h2>
-                <hr/>
+                <hr />
                 <ul class="link-list">
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://web.whatsapp.com/">WhatsApp</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://appchat.vizwise.com.br/#/atendimento">VizChat</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://web.whatsapp.com/">WhatsApp</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://appchat.vizwise.com.br/#/atendimento">VizChat</a></li>
+
                 </ul>
             </section>
             <section class="link-section av">
                 <h2 class="link-section-title">SISTEMAS AVULSOS</h2>
-                <hr/>
+                <hr />
                 <ul class="link-list">
-                    <li class="link-list-item"><a class="link" target="_blank" title="A senha para acesso está no drive." href="http://al.vizwise.com.br:3000">Uso do Servidor</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://ms.vizwise.com.br/servicos/open.do?sys=SER">Pedido de Certidão</a></li>
-                    <li class="link-list-item"><a class="link" target="_blank" href="https://reg.vizwise.com.br/sistemas/open.do?sys=SOL">Requisições</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank" title="A senha para acesso está no drive."
+                            href="http://al.vizwise.com.br:3000">Uso do
+                            Servidor</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://ms.vizwise.com.br/servicos/open.do?sys=SER">Pedido de
+                            Certidão</a></li>
+
+                    <li class="link-list-item"><a class="link" target="_blank"
+                            href="https://reg.vizwise.com.br/sistemas/open.do?sys=SOL">Requisições</a></li>
+
                 </ul>
             </section>
         </div>
@@ -468,7 +590,10 @@
             }
 
             let date = (day < 10 ? '0' + day : day) + ' ' + month + ' ' + year;
-            let time = (hour < 10 ? '0' + hour : hour) + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+
+            let time = (hour < 10 ? '0' + hour : hour) + ':' +
+                (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ?
+                    '0' + seconds : seconds);
 
             return date + '\n' + time;
         }
@@ -518,16 +643,16 @@
             let draggedItem = null;
             let originalNextSibling = null;
             let originalParent = null;
-            
+
             function onDragStart(event) {
                 draggedItem = event.target.closest(".link-section");
                 originalNextSibling = draggedItem.nextElementSibling;
                 originalParent = draggedItem.parentElement;
-                
+
                 draggedItem.classList.add("dragging");
-                draggedItem.style.opacity = "0"; // Mantém o espaço vazio
+                draggedItem.style.opacity = "0"; // Mantém o espaço vazio 
             }
-            
+
             function onDragOver(event) {
                 event.preventDefault();
                 const hoveringOver = event.target.closest(".link-section");
@@ -541,7 +666,7 @@
                     }
                 }
             }
-            
+
             function onDragEnd() {
                 if (draggedItem) {
                     draggedItem.classList.remove("dragging");
@@ -549,7 +674,7 @@
                     draggedItem = null;
                 }
             }
-            
+
             document.querySelectorAll(".link-section-title").forEach(title => {
                 title.style.cursor = "grab";
                 title.addEventListener("mousedown", (event) => {
@@ -563,20 +688,36 @@
                 });
             });
 
-            // NOVO - Lógica para os botões de toggle
+            // NOVO - Lógica de Toggle Animado
             const toggleCalendarBtn = document.getElementById('toggle-calendar-btn');
             const toggleCardsBtn = document.getElementById('toggle-cards-btn');
             const calendarContainer = document.getElementById('calendar-container');
             const linksContainer = document.getElementById('links-container');
 
+            function toggleSection(btn, container) {
+                // Alterna a classe que colapsa (esconde)
+                container.classList.toggle('collapsed');
+                // Alterna o estilo visual do botão
+                btn.classList.toggle('active');
+                
+                // Muda o texto do botão para indicar estado
+                if(container.classList.contains('collapsed')) {
+                   btn.innerText = btn.innerText.replace('-', '+');
+                } else {
+                   btn.innerText = btn.innerText.replace('+', '-');
+                }
+            }
+
             toggleCalendarBtn.addEventListener('click', () => {
-                calendarContainer.classList.toggle('hidden');
+                toggleSection(toggleCalendarBtn, calendarContainer);
             });
 
             toggleCardsBtn.addEventListener('click', () => {
-                linksContainer.classList.toggle('hidden');
+                toggleSection(toggleCardsBtn, linksContainer);
             });
-            // FIM DA NOVA LÓGICA
+            // FIM DA NOVA LÓGICA 
         });
     </script>
+</body>
+
 </html>
