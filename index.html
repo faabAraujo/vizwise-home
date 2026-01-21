@@ -1,724 +1,622 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 
 <head>
     <meta charset="utf-8" />
-    <title>Home | Viz Wise</title>
+    <title>Viz Wise - Dash 2.0</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        dark: {
+                            950: '#050505',
+                            900: '#0a0a0a',
+                            800: '#171717',
+                            700: '#262626',
+                        },
+                        brand: {
+                            blue: '#3b82f6',
+                            green: '#10b981',
+                            purple: '#a855f7',
+                            pink: '#ec4899',
+                            orange: '#f97316',
+                            red: '#ef4444',
+                            indigo: '#6366f1',
+                            cyan: '#06b6d4'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-    <link rel="icon" type="image/x-icon"
-        href="https://img.icons8.com/?size=100&id=bMOitNfx1Qs9&format=png&color=c6c6c6">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- SortableJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://img.icons8.com/?size=100&id=bMOitNfx1Qs9&format=png&color=c6c6c6">
 
     <style>
-        /* Fonts */
-        body {
-            font-family: 'Poppins', sans-serif !important;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .dark ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+
+        /* --- BACKGROUND STYLES (Light & Dark) --- */
+        .bg-hybrid {
+            /* Default (Light Mode) - Clean Grid */
+            background-color: #f8fafc;
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-attachment: fixed;
+            transition: background-color 0.5s ease;
         }
 
-        /* Animations */
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+        /* Dark Mode Override - Mesh Gradient */
+        .dark .bg-hybrid {
+            background-color: #050505;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+            background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%, 100% 100%;
+            background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat;
         }
 
-        /* Elements */
-        a {
-            text-decoration: none;
-        }
-
-        html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-weight: 300;
-        }
-
-        body {
-            align-items: center;
-            background-color: #131314;
-            color: #ddd;
-            display: flex;
-            height: 100%;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        main {
-            animation-duration: 1s;
-            animation-name: fade-in;
-            font-family: Poppins, sans-serif;
-            margin: auto;
-            width: 100%;
-            /* Permite rolagem se o conteúdo exceder a tela */
-            max-height: 100vh;
-            overflow-y: auto;
-        }
-
-        h2 {
-            font-weight: bolder;
-        }
-
-        hr {
-            color: white;
-            width: 50%;
-        }
-
-        /* Classes */
-        .links-container {
-            width: 100%;
-        }
-
-        .link-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px;
-            overflow-y: auto;
-            border-radius: 10px;
-            box-shadow: 0 0 10px 2px #101011;
-            cursor: grab;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-        }
-
-        .pr {
-            background-color: #202838;
-            border: 3px #3d73f2 solid;
-        }
-
-        .ms {
-            background-color: #233427;
-            border: 3px #41a25a solid;
-        }
-
-        .mg {
-            background-color: #8e44ad33;
-            border: 3px #8e44ad solid;
-        }
-
-        .al {
-            background-color: #323232;
-            border: 3px #c6c6c6 solid;
-        }
-
-        .ba {
-            background-color: #382631;
-            border: 3px #ef64b9 solid;
-        }
-
-        .re {
-            background-color: #372b24;
-            border: 3px #ea864a solid;
-        }
-
-        .ger {
-            background-color: #352020;
-            border: 3px #df3b3b solid;
-        }
-
-        .av {
-            background-color: #242035;
-            border: 3px #593bdf solid;
-        }
-
-        .link-section:active {
-            cursor: grabbing;
-        }
-
-        .dragging {
-            opacity: 0.1;
-            box-shadow: 0 0 10px 2px #101011;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-        }
-
-        .link-section-title {
-            font-size: 20px;
-            margin: 0;
-            padding: 2.5%;
-            text-align: center;
-        }
-
-        .link-list {
-            padding: 0;
-        }
-
-        .link-list-item {
-            align-items: center;
-            display: flex;
-            height: 1.5em;
-            justify-content: center;
-            line-height: 2em;
-            list-style-type: none;
-            margin: 1vh 0 1vh 0;
-            text-align: center;
-            width: 100%;
-        }
-
-        .link-list-item:hover {
-            text-shadow:
-                2px 2px 4px #1c1d1f,
-                0 0 2em #282a2c,
-                0 0 0.5em white;
-        }
-
-        .link {
-            color: #ddd;
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-
-        .aviso-italic {
-            font-weight: 300;
-            font-style: italic;
-            margin: 0;
-        }
-
-        /* IDs */
-        #links-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-row-gap: 5vh;
-            /* Padding definido na animação para evitar pulos */
-        }
-
-
-        #calendar-container {
-            /* Padding ajustado na classe de animação */
-            text-align: center;
-            overflow: hidden;
-        }
-
-        #clock {
-            font-family: Roboto, sans-serif;
-        }
-
-        #top-div {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: 1fr 1fr;
-            grid-column-end: 5;
-            grid-column-start: 1;
-            text-align: center;
-            padding: 0 2vw 0 2vw;
-        }
-
-        #search-form,
-        #clock-div {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-            gap: 60%;
-        }
-
-        #search-bar-wrapper {
-            display: inline-block;
-            position: relative;
-            width: 100%;
-        }
-
-        #search-bar,
-        #search-bar-btn {
-            background-color: #282a2c;
-            border-color: #1c1d1f;
-            border-style: solid;
-            border-width: 2px;
-        }
-
-        #search-bar {
-            box-shadow: 0 0 10px 2px #101011;
-            box-sizing: border-box;
-            border-radius: 30px;
-            color: #ddd;
-            font-size: 16px;
-            height: 25px;
-            padding: 25px 25px 25px 25px;
-            text-align: center;
-            width: 100%;
-            transition: background-color 0.3s, border-color 0.3s ease-in-out;
-        }
-
-        #search-bar-btn {
-            display: inline-block;
-            align-self: center;
-            font-size: 16px;
-            height: 25px;
-            padding: 0 0 0 0;
-            position: absolute;
-            right: 10px;
-            top: 17px;
-            width: 25px;
-            border: none;
-        }
-
-        #search-bar:focus,
-        #search-bar:focus+#search-bar-btn {
-            background: #1c1d1f;
-        }
-
-        #search-bar:hover {
-            border: 2px #c6c6c6 solid;
-            transition: background-color 0.5s, border-color 0.5s ease-in-out;
-        }
-
-        #search-bar:active {
-            border: 2px #c6c6c6 solid;
-        }
-
-        /* NOVO - Estilos para os botões e animação */
-        #button-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 15px 0;
-        }
-
-        .toggle-btn {
-            background-color: #282a2c;
-            color: #ddd;
-            border: 2px solid #555;
-            border-radius: 8px;
-            padding: 10px 15px;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-btn:hover {
-            background-color: #3a3c3e;
-            border-color: #c6c6c6;
-            transform: translateY(-2px);
-        }
-
-        .toggle-btn.active {
-            background-color: #323232;
-            border-color: #c6c6c6;
-            color: white;
-        }
-
-        /* LÓGICA DE ANIMAÇÃO ELEGANTE */
-        .animatable-container {
-            /* Estado Expandido (Padrão) */
-            max-height: 2500px; /* Valor alto para garantir que o conteúdo caiba */
-            opacity: 1;
-            overflow: hidden;
-            transform: translateY(0);
-            
-            /* Transição suave cúbica */
-            transition: 
-                max-height 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.6s ease-in-out,
-                padding 0.6s ease,
-                transform 0.6s ease;
-        }
-
-        /* Ajustes específicos para manter o layout original quando aberto */
-        #calendar-container.animatable-container {
-            padding: 2vh 5vw 0 5vw;
+        /* --- GLASS CARD STYLES --- */
+        .glass-card {
+            /* Light Mode */
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        #links-container.animatable-container {
-            padding: 2vh 5vw;
+        .dark .glass-card {
+            /* Dark Mode */
+            background: rgba(15, 15, 17, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         }
 
-        /* Estado Colapsado (Escondido) */
-        .animatable-container.collapsed {
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .dark .glass-card:hover {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- INPUT STYLES --- */
+        .glass-input {
+            /* Light Mode */
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+        
+        .dark .glass-input {
+            /* Dark Mode */
+            background: rgba(20, 20, 25, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: none;
+        }
+
+        .glass-input:focus-within {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .dark .glass-input:focus-within {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(20, 20, 25, 0.8);
+        }
+
+        /* --- BUTTON STYLES (Light/Dark Switch) --- */
+        .glass-btn {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.6);
+            color: #4b5563; /* Gray 600 */
+        }
+        .dark .glass-btn {
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Gray 700/50 equiv */
+            background: rgba(10, 10, 10, 0.4); /* Dark 900/40 equiv */
+            color: #d1d5db; /* Gray 300 */
+        }
+        
+        /* State when Active (Open) */
+        .glass-btn.active-btn {
+            border-color: rgba(59, 130, 246, 0.5);
+            background: rgba(255, 255, 255, 0.9);
+            color: #1f2937;
+        }
+        .dark .glass-btn.active-btn {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(10, 10, 10, 0.8);
+            color: white;
+        }
+
+        /* --- ANIMATIONS & UTILS --- */
+        .section-content {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 2500px;
+            opacity: 1;
+            overflow: hidden;
+        }
+        .section-content.collapsed {
             max-height: 0;
             opacity: 0;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            margin-top: 0 !important;
-            margin-bottom: 0 !important;
-            transform: translateY(-20px); /* Leve deslize para cima ao fechar */
-            pointer-events: none; /* Evita cliques enquanto invisível */
-        }
-        /* FIM DO NOVO CSS */
-
-
-        /* Media Queries */
-        @media only screen and (min-width: 600px) {
-
-            #links-container {
-                column-gap: 3vw;
-                grid-column-gap: 3vw;
-                grid-row-gap: 5vh;
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: 1fr 1fr;
-                row-gap: 5vh;
-            }
-
+            pointer-events: none;
+            transform: scale(0.98);
         }
 
-        @media only screen and (min-width: 768px) {
-
-            #links-container {
-                grid-template-columns: 1fr 1fr 1fr 1fr;
-                grid-template-rows: 1fr;
-            }
-
+        .sortable-ghost { opacity: 0.3; transform: scale(0.95); }
+        .sortable-drag { cursor: grabbing; }
+        
+        .cyber-link-hover {
+            position: relative;
+            overflow: hidden;
         }
-
-        @media only screen and (min-width: 1200px) {
-
-            #top-div {
-                padding: 0 10vw 0 10vw;
-            }
-
-            #links-container.animatable-container {
-                padding: 2vh 15vw 2vh 15vw;
-            }
-
+        .cyber-link-hover::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+        .dark .cyber-link-hover::after {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+        }
+        .cyber-link-hover:hover::after {
+            transform: translateX(100%);
         }
     </style>
 </head>
 
-<body>
-    <main>
-        <div id="top-div">
-            <div id="clock-div">
-                <div>
-                    <img src="https://pr.vizwise.com.br/financeiro/assets/images/logo.svg" alt="Logo Viz">
-                </div>
-                <h1 id="clock">
-                    00/00/0000
-                    00:00:00
-                </h1>
-            </div>
-            <form id="search-form" action="https://www.google.com/search">
-                <div id="search-bar-wrapper">
-                    <input id="search-bar" name="q" type="text" title="Search" placeholder="Pesquise no Google" />
+<body class="bg-hybrid text-gray-700 dark:text-gray-300 min-h-screen flex flex-col items-center selection:bg-brand-blue selection:text-white overflow-y-auto font-sans antialiased transition-colors duration-500">
 
-                    <button id="search-bar-btn" type="submit"><svg style="height:1em;" viewBox="0 0 12 
-13">
-                            <g stroke-width="2" stroke="white" fill="none">
-                                <path d="M11.29 11.71l-4-4" />
-                                <circle cx="5" cy="5" r="4" />
-                            </g>
-                        </svg></button>
+    <main class="w-full max-w-[1400px] px-4 py-10 md:py-16 fade-in animate-[fadeIn_0.8s_ease-out] relative z-10">
+        
+        <!-- Header Zone -->
+        <div class="flex flex-col items-center justify-center space-y-10 mb-16">
+            
+            <!-- Logo & Clock -->
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 text-center w-full">
+                <div class="relative group cursor-pointer">
+                    <!-- Glow effect behind logo -->
+                    <div class="absolute -inset-4 bg-brand-blue/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
+                    <!-- Assuming logo has transparency, adding a backdrop for dark logos on dark mode if needed, or just let it float -->
+                    <img src="https://pr.vizwise.com.br/financeiro/assets/images/logo.svg" alt="Logo Viz" class="relative h-16 md:h-20 drop-shadow-2xl hover:scale-105 transition-transform duration-500">
+                </div>
+                
+                <div class="text-center md:text-left space-y-1">
+                    <h1 id="clock" class="font-mono text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-700 via-gray-500 to-gray-400 dark:from-white dark:via-gray-200 dark:to-gray-400 bg-clip-text text-transparent tracking-tighter drop-shadow-sm tabular-nums">
+                        00:00:00
+                    </h1>
+                    <div class="flex items-center justify-center md:justify-start gap-2">
+                        <div class="w-1.5 h-1.5 bg-brand-green rounded-full animate-pulse"></div>
+                        <p id="date" class="text-brand-blue font-medium text-sm uppercase tracking-[0.2em] opacity-90"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Bar Modern (Rounded) -->
+            <form id="search-form" action="https://www.google.com/search" class="w-full max-w-xl relative group z-20">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-blue via-brand-purple to-brand-pink rounded-full opacity-20 group-focus-within:opacity-100 blur transition duration-700 group-hover:opacity-50"></div>
+                <div class="relative flex items-center glass-input rounded-full">
+                    <i class="ph-duotone ph-magnifying-glass absolute left-5 text-gray-400 text-xl group-focus-within:text-brand-blue dark:group-focus-within:text-white transition-colors"></i>
+                    <input 
+                        id="search-bar" 
+                        name="q" 
+                        type="text" 
+                        autocomplete="off"
+                        placeholder="Pesquise no Google..." 
+                        class="w-full bg-transparent border-none rounded-full py-3.5 pl-14 pr-14 text-gray-800 dark:text-white text-base placeholder-gray-500 focus:ring-0 focus:outline-none"
+                    />
+                    <button type="submit" class="absolute right-2 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                        <i class="ph-bold ph-arrow-right"></i>
+                    </button>
                 </div>
             </form>
 
-            <div id="button-container">
-                <!-- Adicionei IDs e removi classes desnecessárias -->
-                <button id="toggle-calendar-btn" class="toggle-btn">+ Google Agenda</button>
-                <button id="toggle-cards-btn" class="toggle-btn">+ Cards</button>
-            </div>
-            <div>
+            <!-- Navigation Buttons & Theme Toggle -->
+            <div class="flex flex-wrap justify-center gap-4">
+                
+                <!-- Toggle: Agenda -->
+                <button id="toggle-calendar-btn" class="glass-btn relative overflow-hidden group flex items-center gap-2.5 px-6 py-3 rounded-full transition-all active:scale-95 shadow-lg backdrop-blur-md">
+                    <div class="absolute inset-0 bg-brand-blue/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                    <i class="ph-duotone ph-calendar-blank text-xl text-brand-blue group-hover:text-brand-blue dark:group-hover:text-white transition-colors relative z-10"></i>
+                    <span class="text-sm font-medium relative z-10 group-hover:text-black dark:group-hover:text-white transition-colors">Agenda</span>
+                </button>
+                
+                <!-- Toggle: Sistemas -->
+                <button id="toggle-cards-btn" class="glass-btn relative overflow-hidden group flex items-center gap-2.5 px-6 py-3 rounded-full transition-all active:scale-95 shadow-lg backdrop-blur-md">
+                    <div class="absolute inset-0 bg-brand-green/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                    <i class="ph-duotone ph-cards text-xl text-brand-green group-hover:text-brand-green dark:group-hover:text-white transition-colors relative z-10"></i>
+                    <span class="text-sm font-medium relative z-10 group-hover:text-black dark:group-hover:text-white transition-colors">Sistemas</span>
+                </button>
 
-                <h5 class="aviso-italic">Para reorganizar os
-                    itens como preferir, basta clicar e segurar sobre o nome e
-                    arrastá-lo.</h5>
+                <!-- Toggle: Theme (Light/Dark) -->
+                <button id="theme-toggle-btn" class="glass-btn relative overflow-hidden group flex items-center justify-center w-12 h-12 rounded-full transition-all active:scale-95 shadow-lg backdrop-blur-md hover:border-brand-purple/50">
+                     <div class="absolute inset-0 bg-brand-purple/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                     <i id="theme-icon" class="ph-duotone ph-moon text-xl text-brand-purple group-hover:text-brand-purple dark:group-hover:text-white transition-colors relative z-10"></i>
+                </button>
             </div>
         </div>
 
-        <!-- Adicionei as classes animatable-container e collapsed (estado inicial fechado) -->
-        <div id="calendar-container" class="animatable-container collapsed">
-            <iframe
-                src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&showPrint=0&src=bWF0aGV1cy52aXp3aXNlQGdtYWlsLmNvbQ&src=cHQuYnJhemlsaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY_Y29t&src=ZmFiaWFub2Zhc3RzaXN0ZW1hc0BnbWFpbC5jb20&color=%23039be5&color=%230b8043&color=%237cb342&bgcolor=%23131314"
-                style="border: 1px solid #333; border-radius: 10px; width: 100%; max-width: 1200px;" height="600"
-                frameborder="0" scrolling="no">
-            </iframe>
+        <!-- Calendar Section -->
+        <div id="calendar-container" class="section-content w-full mb-12 collapsed">
+            <div class="glass-card rounded-3xl p-1.5 overflow-hidden">
+                <div class="bg-white dark:bg-dark-900 rounded-[20px] overflow-hidden relative transition-colors duration-300">
+                    <!-- Tech border accent -->
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-blue via-brand-purple to-brand-pink opacity-50"></div>
+                    <iframe 
+                        src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&showPrint=0&src=bWF0aGV1cy52aXp3aXNlQGdtYWlsLmNvbQ&src=cHQuYnJhemlsaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY_Y29t&src=ZmFiaWFub2Zhc3RzaXN0ZW1hc0BnbWFpbC5jb20&color=%233b82f6&color=%2310b981&color=%23f97316&bgcolor=%230a0a0a" 
+                        style="border: 0" 
+                        width="100%" 
+                        height="600" 
+                        frameborder="0" 
+                        scrolling="no"
+                        class="grayscale-[0.5] hover:grayscale-0 transition-all duration-500 mix-blend-multiply dark:mix-blend-normal opacity-90 hover:opacity-100">
+                    </iframe>
+                </div>
+            </div>
         </div>
 
-        <!-- Adicionei as classes animatable-container e collapsed (estado inicial fechado) -->
-        <div id="links-container" class="animatable-container collapsed">
-            <section class="link-section pr">
-                <h2 class="link-section-title">PARANÁ</h2>
-                <hr />
-                <ul class="link-list">
+        <!-- Grid Section -->
+        <div id="links-wrapper" class="section-content collapsed">
+            <div class="flex items-center justify-center gap-2 mb-8 opacity-50 hover:opacity-100 transition-opacity">
+                <i class="ph-duotone ph-hand-grabbing text-xl"></i>
+                <span class="text-[10px] font-mono uppercase tracking-[0.3em]">Drag to Reorder</span>
+            </div>
 
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://pr.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
+            <div id="sortable-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 pb-20">
+                
+                <!-- Card: PARANÁ -->
+                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-blue/40" data-id="card-pr">
+                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-blue to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#3b82f6] transition-all duration-500"></div>
+                    
+                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
+                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <i class="ph-duotone ph-map-pin text-brand-blue text-3xl drop-shadow-[0_0_8px_rgba(59,130,246,0.3)] dark:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]"></i>
+                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Paraná</h2>
+                            </div>
+                            <div class="text-[9px] font-mono text-brand-blue border border-brand-blue/30 px-1.5 py-0.5 rounded">SYS.01</div>
+                        </div>
 
+                        <ul class="space-y-2.5">
+                            <li>
+                                <a href="https://pr.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-blue hover:border-l-brand-blue hover:bg-brand-blue/5 dark:hover:bg-brand-blue/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all duration-200">
+                                    > NOTAS
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://pr.vizwise.com.br/protesto/open.do?action=open&sys=PRO" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-blue hover:border-l-brand-blue hover:bg-brand-blue/5 dark:hover:bg-brand-blue/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all duration-200">
+                                    > PROTESTO
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://pr.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-blue hover:border-l-brand-blue hover:bg-brand-blue/5 dark:hover:bg-brand-blue/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all duration-200">
+                                    > FINANCEIRO
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://pr.vizwise.com.br/rcpn/open.do?action=open&sys=RCP" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-blue hover:border-l-brand-blue hover:bg-brand-blue/5 dark:hover:bg-brand-blue/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all duration-200">
+                                    > RCPN
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://pr.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
+                <!-- Card: MS -->
+                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-green/40" data-id="card-ms">
+                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-green to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#10b981] transition-all duration-500"></div>
+                    
+                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
+                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <i class="ph-duotone ph-map-pin text-brand-green text-3xl drop-shadow-[0_0_8px_rgba(16,185,129,0.3)] dark:drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]"></i>
+                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Mato Grosso</h2>
+                            </div>
+                            <div class="text-[9px] font-mono text-brand-green border border-brand-green/30 px-1.5 py-0.5 rounded">SYS.02</div>
+                        </div>
 
+                        <ul class="space-y-2.5">
+                            <li><a href="https://ms.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-green hover:border-l-brand-green hover:bg-brand-green/5 dark:hover:bg-brand-green/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-200">> NOTAS</a></li>
+                            <li><a href="https://ms.vizwise.com.br/protesto/open.do?action=open&sys=PRO" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-green hover:border-l-brand-green hover:bg-brand-green/5 dark:hover:bg-brand-green/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-200">> PROTESTO</a></li>
+                            <li><a href="https://ms.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-green hover:border-l-brand-green hover:bg-brand-green/5 dark:hover:bg-brand-green/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-200">> FINANCEIRO</a></li>
+                            <li><a href="https://ms.vizwise.com.br/senha/open.do?sys=SEN" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-green hover:border-l-brand-green hover:bg-brand-green/5 dark:hover:bg-brand-green/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-200">> SENHAS</a></li>
+                        </ul>
+                    </div>
+                </div>
 
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://pr.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a>
-                    </li>
+                <!-- Card: MG -->
+                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-purple/40" data-id="card-mg">
+                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-purple to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#a855f7] transition-all duration-500"></div>
+                    
+                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
+                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <i class="ph-duotone ph-map-pin text-brand-purple text-3xl drop-shadow-[0_0_8px_rgba(168,85,247,0.3)] dark:drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]"></i>
+                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Minas Gerais</h2>
+                            </div>
+                            <div class="text-[9px] font-mono text-brand-purple border border-brand-purple/30 px-1.5 py-0.5 rounded">SYS.03</div>
+                        </div>
 
+                        <ul class="space-y-2.5">
+                            <li><a href="https://mg.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-purple hover:border-l-brand-purple hover:bg-brand-purple/5 dark:hover:bg-brand-purple/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(168,85,247,0.1)] transition-all duration-200">> NOTAS</a></li>
+                        </ul>
+                    </div>
+                </div>
 
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://pr.vizwise.com.br/rcpn/open.do?action=open&sys=RCP">RCPN</a></li>
+                <!-- Card: ALAGOAS -->
+                <div class="glass-card rounded-2xl overflow-hidden group hover:border-gray-400/40" data-id="card-al">
+                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#9ca3af] transition-all duration-500"></div>
+                    
+                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
+                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <i class="ph-duotone ph-map-pin text-gray-400 text-3xl drop-shadow-[0_0_8px_rgba(156,163,175,0.3)] dark:drop-shadow-[0_0_8px_rgba(156,163,175,0.8)]"></i>
+                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Alagoas</h2>
+                            </div>
+                            <div class="text-[9px] font-mono text-gray-500 border border-gray-400/30 px-1.5 py-0.5 rounded">SYS.04</div>
+                        </div>
 
-                </ul>
-            </section>
-            <section class="link-section ms">
-                <h2 class="link-section-title">MATO GROSSO DO SUL</h2>
-                <hr />
-                <ul class="link-list">
+                        <ul class="space-y-2.5">
+                            <li><a href="https://al.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-gray-700 dark:hover:text-white hover:border-l-gray-500 dark:hover:border-l-white hover:bg-gray-100 dark:hover:bg-white/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-200">> NOTAS</a></li>
+                            <li><a href="https://al.vizwise.com.br/protesto/open.do?action=open&sys=PRO" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-gray-700 dark:hover:text-white hover:border-l-gray-500 dark:hover:border-l-white hover:bg-gray-100 dark:hover:bg-white/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-200">> PROTESTO</a></li>
+                            <li><a href="https://al.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-gray-700 dark:hover:text-white hover:border-l-gray-500 dark:hover:border-l-white hover:bg-gray-100 dark:hover:bg-white/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-200">> FINANCEIRO</a></li>
+                        </ul>
+                    </div>
+                </div>
 
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://ms.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
+                <!-- Card: LINKS -->
+                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-pink/40" data-id="card-links">
+                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-pink to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#ec4899] transition-all duration-500"></div>
+                    
+                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
+                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <i class="ph-duotone ph-link text-brand-pink text-3xl drop-shadow-[0_0_8px_rgba(236,72,153,0.3)] dark:drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]"></i>
+                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Links Úteis</h2>
+                            </div>
+                            <div class="text-[9px] font-mono text-brand-pink border border-brand-pink/30 px-1.5 py-0.5 rounded">DB.01</div>
+                        </div>
 
+                        <ul class="space-y-2.5">
+                            <li><a href="https://drive.google.com/drive/folders/1WJykw18G3YTD0hMBs_oSLKY9AVr2p0Pg?usp=drive_link" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-pink hover:border-l-brand-pink hover:bg-brand-pink/5 dark:hover:bg-brand-pink/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(236,72,153,0.1)] transition-all duration-200">> DRIVE SISTEMAS</a></li>
+                            <li><a href="https://docs.google.com/spreadsheets/d/1rOkWRdZIWi3x9gv0sy558I9aM_dZdaXTTsqinfVqDUY/edit?usp=drive_link" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-pink hover:border-l-brand-pink hover:bg-brand-pink/5 dark:hover:bg-brand-pink/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(236,72,153,0.1)] transition-all duration-200">> PLANILHA LINKS</a></li>
+                            <li><a href="https://drive.google.com/drive/folders/1s1Bd4Qacp1LravulgEnUoMUsIVL38tWg?usp=drive_link" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-pink hover:border-l-brand-pink hover:bg-brand-pink/5 dark:hover:bg-brand-pink/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(236,72,153,0.1)] transition-all duration-200">> MANUAIS</a></li>
+                            <li><a href="https://drive.google.com/drive/folders/1Uc9b5isCkuQRWmnf1x32CmoquiN6xe5L?usp=drive_link" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-pink hover:border-l-brand-pink hover:bg-brand-pink/5 dark:hover:bg-brand-pink/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(236,72,153,0.1)] transition-all duration-200">> VÍDEOS</a></li>
+                        </ul>
+                    </div>
+                </div>
 
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://ms.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
+                <!-- Card: CHATS -->
+                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-red/40" data-id="card-chats">
+                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-red to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#ef4444] transition-all duration-500"></div>
+                    
+                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
+                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <i class="ph-duotone ph-chats-circle text-brand-red text-3xl drop-shadow-[0_0_8px_rgba(239,68,68,0.3)] dark:drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"></i>
+                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Chats</h2>
+                            </div>
+                            <div class="text-[9px] font-mono text-brand-red border border-brand-red/30 px-1.5 py-0.5 rounded">COM.01</div>
+                        </div>
 
+                        <ul class="space-y-2.5">
+                            <li><a href="https://web.whatsapp.com/" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-red hover:border-l-brand-red hover:bg-brand-red/5 dark:hover:bg-brand-red/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(239,68,68,0.1)] transition-all duration-200">> WHATSAPP</a></li>
+                            <li><a href="https://appchat.vizwise.com.br/#/atendimento" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-red hover:border-l-brand-red hover:bg-brand-red/5 dark:hover:bg-brand-red/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(239,68,68,0.1)] transition-all duration-200">> VIZCHAT</a></li>
+                        </ul>
+                    </div>
+                </div>
 
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://ms.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a>
-                    </li>
+                <!-- Card: AVULSOS -->
+                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-indigo/40" data-id="card-avulsos">
+                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-indigo to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#6366f1] transition-all duration-500"></div>
+                    
+                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
+                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <i class="ph-duotone ph-nut text-brand-indigo text-3xl drop-shadow-[0_0_8px_rgba(99,102,241,0.3)] dark:drop-shadow-[0_0_8px_rgba(99,102,241,0.8)]"></i>
+                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Avulsos</h2>
+                            </div>
+                            <div class="text-[9px] font-mono text-brand-indigo border border-brand-indigo/30 px-1.5 py-0.5 rounded">EXT.01</div>
+                        </div>
 
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://ms.vizwise.com.br/senha/open.do?sys=SEN">Senhas</a></li>
-
-                </ul>
-            </section>
-            <section class="link-section mg">
-                <h2 class="link-section-title">MINAS GERAIS</h2>
-                <hr />
-                <ul class="link-list">
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://mg.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
-
-                </ul>
-            </section>
-            <section class="link-section al">
-                <h2 class="link-section-title">ALAGOAS</h2>
-                <hr />
-                <ul class="link-list">
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://al.vizwise.com.br/notas/open.do?action=open&sys=NOT">Notas</a></li>
-
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://al.vizwise.com.br/protesto/open.do?action=open&sys=PRO">Protesto</a></li>
-
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://al.vizwise.com.br/financeiro/open.do?action=open&sys=FIN">Financeiro</a>
-                    </li>
-
-                </ul>
-            </section>
-            <section class="link-section ba">
-                <h2 class="link-section-title">LINKS</h2>
-                <hr />
-                <ul class="link-list">
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://drive.google.com/drive/folders/1WJykw18G3YTD0hMBs_oSLKY9AVr2p0Pg?usp=drive_link">Drive
-                            Sistemas</a></li>
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://docs.google.com/spreadsheets/d/1rOkWRdZIWi3x9gv0sy558I9aM_dZdaXTTsqinfVqDUY/edit?usp=drive_link">Links
-                            Úteis</a></li>
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://drive.google.com/drive/folders/1s1Bd4Qacp1LravulgEnUoMUsIVL38tWg?usp=drive_link">Manuais</a>
-                    </li>
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://drive.google.com/drive/folders/1Uc9b5isCkuQRWmnf1x32CmoquiN6xe5L?usp=drive_link">Drive
-                            Vídeos</a></li>
-                </ul>
-            </section>
-            <section class="link-section ger">
-                <h2 class="link-section-title">CHATS</h2>
-                <hr />
-                <ul class="link-list">
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://web.whatsapp.com/">WhatsApp</a></li>
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://appchat.vizwise.com.br/#/atendimento">VizChat</a></li>
-
-                </ul>
-            </section>
-            <section class="link-section av">
-                <h2 class="link-section-title">SISTEMAS AVULSOS</h2>
-                <hr />
-                <ul class="link-list">
-
-                    <li class="link-list-item"><a class="link" target="_blank" title="A senha para acesso está no drive."
-                            href="http://al.vizwise.com.br:3000">Uso do
-                            Servidor</a></li>
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://ms.vizwise.com.br/servicos/open.do?sys=SER">Pedido de
-                            Certidão</a></li>
-
-                    <li class="link-list-item"><a class="link" target="_blank"
-                            href="https://reg.vizwise.com.br/sistemas/open.do?sys=SOL">Requisições</a></li>
-
-                </ul>
-            </section>
+                        <ul class="space-y-2.5">
+                            <li><a href="http://al.vizwise.com.br:3000" title="A senha para acesso está no drive." target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-indigo hover:border-l-brand-indigo hover:bg-brand-indigo/5 dark:hover:bg-brand-indigo/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] transition-all duration-200">> USO DO SERVIDOR</a></li>
+                            <li><a href="https://ms.vizwise.com.br/servicos/open.do?sys=SER" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-indigo hover:border-l-brand-indigo hover:bg-brand-indigo/5 dark:hover:bg-brand-indigo/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] transition-all duration-200">> CERTIDÃO</a></li>
+                            <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=SOL" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-indigo hover:border-l-brand-indigo hover:bg-brand-indigo/5 dark:hover:bg-brand-indigo/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] transition-all duration-200">> REQUISIÇÕES</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
         </div>
     </main>
 
+    <!-- Scripts Logic -->
     <script>
-        const clockInterval = 100;
-        const searchEngineUrl = 'https://www.google.com/search?q=';
-        const tabKeyCode = 9;
-        const enterKeyCode = 13;
-        const escapeKeyCode = 27;
-        const searchBarElement = document.getElementById('search-bar');
+        // --- 1. Clock Logic ---
         const clockElement = document.getElementById('clock');
-        const formElement = document.getElementById('search-form');
+        const dateElement = document.getElementById('date');
+        
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            clockElement.innerText = timeString;
 
-        const monthNames = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-
-        function getDateTime() {
-            const dateTime = new Date();
-            let day = dateTime.getDate();
-            let month = monthNames[dateTime.getMonth()];
-            let year = dateTime.getFullYear();
-            let hour = dateTime.getHours();
-            let minutes = dateTime.getMinutes();
-            let seconds = dateTime.getSeconds();
-
-            if (hour < 0) {
-                hour = 24 + hour;
-            }
-
-            let date = (day < 10 ? '0' + day : day) + ' ' + month + ' ' + year;
-
-            let time = (hour < 10 ? '0' + hour : hour) + ':' +
-                (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ?
-                    '0' + seconds : seconds);
-
-            return date + '\n' + time;
+            const dateString = now.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            dateElement.innerText = dateString;
         }
+        setInterval(updateClock, 1000);
+        updateClock(); 
 
-        function setClock() {
-            clockElement.innerText = getDateTime();
-        }
+        // --- 2. Search Logic ---
+        const searchForm = document.getElementById('search-form');
+        const searchInput = document.getElementById('search-bar');
 
-        function search() {
-            let value = searchBarElement.value;
-            if (!value) {
-                return;
-            }
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            if (!query) return;
 
-            if (value.startsWith('https://') || value.startsWith('http://')) {
-                window.location = value;
+            if (query.startsWith('http://') || query.startsWith('https://')) {
+                window.location.href = query;
+            } else if (query.includes('.') && !query.includes(' ')) {
+                window.location.href = 'https://' + query;
             } else {
-                window.location = searchEngineUrl + encodeURIComponent(value);
+                window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && document.activeElement !== searchInput) {
+                e.preventDefault();
+                searchInput.focus();
+            }
+            if (e.key === 'Escape') {
+                searchInput.blur();
+                searchInput.value = '';
+            }
+        });
+
+        // --- 3. Toggle Section Logic (Agenda/Sistemas) ---
+        function setupToggle(btnId, containerId, storageKey) {
+            const btn = document.getElementById(btnId);
+            const container = document.getElementById(containerId);
+            
+            const updateUI = (isOpen) => {
+                if (isOpen) {
+                    container.classList.remove('collapsed');
+                    btn.classList.add('active-btn'); // Use CSS class for active state
+                    
+                    // Borders for specific buttons
+                    if(btnId.includes('calendar')) btn.classList.add('border-brand-blue/30');
+                    if(btnId.includes('cards')) btn.classList.add('border-brand-green/30');
+                } else {
+                    container.classList.add('collapsed');
+                    btn.classList.remove('active-btn');
+                    btn.classList.remove('border-brand-blue/30', 'border-brand-green/30');
+                }
+            };
+
+            const savedState = localStorage.getItem(storageKey) === 'true';
+            updateUI(savedState);
+
+            btn.addEventListener('click', () => {
+                const isCollapsed = container.classList.contains('collapsed');
+                const newState = isCollapsed; // If collapsed, new state is open (true)
+                updateUI(newState);
+                localStorage.setItem(storageKey, newState);
+            });
+        }
+
+        setupToggle('toggle-calendar-btn', 'calendar-container', 'vizwise_calendar_open');
+        setupToggle('toggle-cards-btn', 'links-wrapper', 'vizwise_cards_open');
+
+        // --- 4. Theme Logic (Light/Dark Switch) ---
+        const themeBtn = document.getElementById('theme-toggle-btn');
+        const themeIcon = document.getElementById('theme-icon');
+        const htmlElement = document.documentElement;
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.replace('ph-sun', 'ph-moon');
+            } else {
+                themeIcon.classList.replace('ph-moon', 'ph-sun');
             }
         }
 
-        setClock();
+        function toggleTheme() {
+            const isDark = htmlElement.classList.toggle('dark');
+            localStorage.setItem('vizwise_theme', isDark ? 'dark' : 'light');
+            updateThemeIcon(isDark);
+        }
 
-        setInterval(() => {
-            setClock();
-        }, clockInterval);
+        // Initialize Theme
+        const savedTheme = localStorage.getItem('vizwise_theme');
+        // Default to dark if no save, or if saved is 'dark'
+        if (savedTheme === 'light') {
+            htmlElement.classList.remove('dark');
+            updateThemeIcon(false);
+        } else {
+            htmlElement.classList.add('dark');
+            updateThemeIcon(true);
+        }
 
-        searchBarElement.focus();
-        searchBarElement.value = '';
+        themeBtn.addEventListener('click', toggleTheme);
 
-        formElement.addEventListener('submit', (ev) => {
-            ev.preventDefault();
-            search();
-        });
 
-        document.addEventListener('keypress', (event) => {
-            if (event.keyCode == escapeKeyCode) {
-                searchBarElement.blur();
-                searchBarElement.value = '';
-            } else if (event.keyCode != tabKeyCode && event.keyCode != enterKeyCode) {
-                searchBarElement.focus();
-            }
-        });
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const container = document.getElementById("links-container");
-            let draggedItem = null;
-            let originalNextSibling = null;
-            let originalParent = null;
-
-            function onDragStart(event) {
-                draggedItem = event.target.closest(".link-section");
-                originalNextSibling = draggedItem.nextElementSibling;
-                originalParent = draggedItem.parentElement;
-
-                draggedItem.classList.add("dragging");
-                draggedItem.style.opacity = "0"; // Mantém o espaço vazio 
-            }
-
-            function onDragOver(event) {
-                event.preventDefault();
-                const hoveringOver = event.target.closest(".link-section");
-                if (hoveringOver && hoveringOver !== draggedItem) {
-                    let bounding = hoveringOver.getBoundingClientRect();
-                    let offset = event.clientY - bounding.top;
-                    if (offset > bounding.height / 2) {
-                        hoveringOver.after(draggedItem);
-                    } else {
-                        hoveringOver.before(draggedItem);
-                    }
+        // --- 5. Drag and Drop with Persistence ---
+        const grid = document.getElementById('sortable-grid');
+        new Sortable(grid, {
+            animation: 300,
+            ghostClass: 'sortable-ghost',
+            dragClass: 'sortable-drag',
+            handle: '.handle',
+            delay: 100, 
+            delayOnTouchOnly: true,
+            group: 'vizwise-dashboard', // Necessary for save
+            store: {
+                /**
+                 * Save order using data-id attribute
+                 */
+                get: function (sortable) {
+                    const order = localStorage.getItem(sortable.options.group.name);
+                    return order ? order.split('|') : [];
+                },
+                set: function (sortable) {
+                    const order = sortable.toArray();
+                    localStorage.setItem(sortable.options.group.name, order.join('|'));
                 }
             }
-
-            function onDragEnd() {
-                if (draggedItem) {
-                    draggedItem.classList.remove("dragging");
-                    draggedItem.style.opacity = "1";
-                    draggedItem = null;
-                }
-            }
-
-            document.querySelectorAll(".link-section-title").forEach(title => {
-                title.style.cursor = "grab";
-                title.addEventListener("mousedown", (event) => {
-                    event.preventDefault();
-                    onDragStart(event);
-                    container.addEventListener("mousemove", onDragOver);
-                    document.addEventListener("mouseup", () => {
-                        onDragEnd();
-                        container.removeEventListener("mousemove", onDragOver);
-                    }, { once: true });
-                });
-            });
-
-            // NOVO - Lógica de Toggle Animado
-            const toggleCalendarBtn = document.getElementById('toggle-calendar-btn');
-            const toggleCardsBtn = document.getElementById('toggle-cards-btn');
-            const calendarContainer = document.getElementById('calendar-container');
-            const linksContainer = document.getElementById('links-container');
-
-            function toggleSection(btn, container) {
-                // Alterna a classe que colapsa (esconde)
-                container.classList.toggle('collapsed');
-                // Alterna o estilo visual do botão
-                btn.classList.toggle('active');
-                
-                // Muda o texto do botão para indicar estado
-                if(container.classList.contains('collapsed')) {
-                   btn.innerText = btn.innerText.replace('-', '+');
-                } else {
-                   btn.innerText = btn.innerText.replace('+', '-');
-                }
-            }
-
-            toggleCalendarBtn.addEventListener('click', () => {
-                toggleSection(toggleCalendarBtn, calendarContainer);
-            });
-
-            toggleCardsBtn.addEventListener('click', () => {
-                toggleSection(toggleCardsBtn, linksContainer);
-            });
-            // FIM DA NOVA LÓGICA 
         });
+
     </script>
 </body>
-
 </html>
-
