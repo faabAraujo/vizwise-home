@@ -3,15 +3,13 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Viz Wise - Dash 2.0</title>
+    <title>Viz Wise - Dash 3.4</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -23,31 +21,11 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        dark: {
-                            950: '#050505',
-                            900: '#0a0a0a',
-                            800: '#171717',
-                            700: '#262626',
-                        },
+                        dark: { 950: '#050505', 900: '#0a0a0a', 800: '#171717', 700: '#262626' },
                         brand: {
-                            blue: '#3b82f6',
-                            green: '#10b981',
-                            purple: '#a855f7',
-                            pink: '#ec4899',
-                            orange: '#f97316',
-                            red: '#ef4444',
-                            indigo: '#6366f1',
-                            cyan: '#06b6d4'
-                        }
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
+                            blue: '#3b82f6', green: '#10b981', purple: '#a855f7',
+                            pink: '#ec4899', orange: '#f97316', red: '#ef4444',
+                            indigo: '#6366f1', cyan: '#06b6d4'
                         }
                     }
                 }
@@ -55,146 +33,128 @@
         }
     </script>
 
-    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-    <!-- SortableJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://img.icons8.com/?size=100&id=bMOitNfx1Qs9&format=png&color=c6c6c6">
 
     <style>
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        .dark ::-webkit-scrollbar-thumb:hover { background: #52525b; }
-
-        /* --- BACKGROUND STYLES (Light & Dark) --- */
+        
         .bg-hybrid {
-            /* Default (Light Mode) - Clean Grid */
             background-color: #f8fafc;
-            background-image: 
-                linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-image: linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
             background-size: 40px 40px;
-            background-attachment: fixed;
             transition: background-color 0.5s ease;
         }
-
-        /* Dark Mode Override - Mesh Gradient */
         .dark .bg-hybrid {
             background-color: #050505;
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
-            background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%, 100% 100%;
-            background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat;
+            background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%;
+            background-repeat: repeat, repeat, no-repeat, no-repeat;
         }
 
-        /* --- GLASS CARD STYLES --- */
         .glass-card {
-            /* Light Mode */
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(0, 0, 0, 0.05);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
         .dark .glass-card {
-            /* Dark Mode */
-            background: rgba(15, 15, 17, 0.2);
+            background: rgba(15, 15, 17, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         }
+        .glass-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
 
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        .dark .glass-card:hover {
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        /* --- INPUT STYLES --- */
         .glass-input {
-            /* Light Mode */
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
-        
         .dark .glass-input {
-            /* Dark Mode */
             background: rgba(20, 20, 25, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: none;
         }
-
         .glass-input:focus-within {
-            border-color: rgba(59, 130, 246, 0.5);
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
             background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(59, 130, 246, 0.5);
         }
         .dark .glass-input:focus-within {
-            border-color: rgba(255, 255, 255, 0.2);
             background: rgba(20, 20, 25, 0.8);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
-        /* --- BUTTON STYLES (Light/Dark Switch) --- */
         .glass-btn {
             border: 1px solid rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.6);
-            color: #4b5563; /* Gray 600 */
+            background: rgba(255, 255, 255, 0.4);
+            color: #6b7280;
+            transition: all 0.3s ease;
         }
         .dark .glass-btn {
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Gray 700/50 equiv */
-            background: rgba(10, 10, 10, 0.4); /* Dark 900/40 equiv */
-            color: #d1d5db; /* Gray 300 */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(10, 10, 10, 0.4);
+            color: #9ca3af;
         }
         
-        /* State when Active (Open) */
-        .glass-btn.active-btn {
-            border-color: rgba(59, 130, 246, 0.5);
-            background: rgba(255, 255, 255, 0.9);
-            color: #1f2937;
+        /* Active States for Tabs */
+        .glass-btn.active-tab-agenda {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.6);
+            color: #3b82f6;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
         }
-        .dark .glass-btn.active-btn {
-            border-color: rgba(59, 130, 246, 0.3);
-            background: rgba(10, 10, 10, 0.8);
-            color: white;
+        .dark .glass-btn.active-tab-agenda {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
         }
 
-        /* --- ANIMATIONS & UTILS --- */
-        .section-content {
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 2500px;
-            opacity: 1;
+        .glass-btn.active-tab-sistemas {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.6);
+            color: #10b981;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+        .dark .glass-btn.active-tab-sistemas {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        /* --- Panel Transition Logic --- */
+        .panel {
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             overflow: hidden;
         }
-        .section-content.collapsed {
-            max-height: 0;
+        .panel-active {
+            flex: 1 1 0%;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .panel-inactive {
+            flex: 0 0 0%;
             opacity: 0;
+            transform: translateY(10px) scale(0.98);
             pointer-events: none;
-            transform: scale(0.98);
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
-        .sortable-ghost { opacity: 0.3; transform: scale(0.95); }
-        .sortable-drag { cursor: grabbing; }
-        
+        /* --- HOVER EFFECT --- */
         .cyber-link-hover {
             position: relative;
             overflow: hidden;
+            transition: all 0.2s ease;
         }
         .cyber-link-hover::after {
             content: '';
@@ -210,413 +170,346 @@
         .cyber-link-hover:hover::after {
             transform: translateX(100%);
         }
+        .cyber-link-hover:hover {
+            background: rgba(59, 130, 246, 0.05);
+            padding-left: 1.25rem;
+        }
     </style>
 </head>
 
-<body class="bg-hybrid text-gray-700 dark:text-gray-300 min-h-screen flex flex-col items-center selection:bg-brand-blue selection:text-white overflow-y-auto font-sans antialiased transition-colors duration-500">
+<body class="bg-hybrid text-gray-700 dark:text-gray-300 h-screen w-screen overflow-hidden flex flex-col font-sans antialiased selection:bg-brand-blue selection:text-white">
 
-    <main class="w-full max-w-[1400px] px-4 py-10 md:py-16 fade-in animate-[fadeIn_0.8s_ease-out] relative z-10">
+    <header class="h-20 shrink-0 px-6 flex items-center justify-between border-b border-gray-200/50 dark:border-white/5 relative z-20 backdrop-blur-sm">
         
-        <!-- Header Zone -->
-        <div class="flex flex-col items-center justify-center space-y-10 mb-16">
-            
-            <!-- Logo & Clock -->
-            <div class="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 text-center w-full">
-                <div class="relative group cursor-pointer">
-                    <!-- Glow effect behind logo -->
-                    <div class="absolute -inset-4 bg-brand-blue/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
-                    <!-- Assuming logo has transparency, adding a backdrop for dark logos on dark mode if needed, or just let it float -->
-                    <img src="https://pr.vizwise.com.br/financeiro/assets/images/logo.svg" alt="Logo Viz" class="relative h-16 md:h-20 drop-shadow-2xl hover:scale-105 transition-transform duration-500">
-                </div>
-                
-                <div class="text-center md:text-left space-y-1">
-                    <h1 id="clock" class="font-mono text-5xl md:text-6xl font-bold bg-gradient-to-r from-gray-700 via-gray-500 to-gray-400 dark:from-white dark:via-gray-200 dark:to-gray-400 bg-clip-text text-transparent tracking-tighter drop-shadow-sm tabular-nums">
-                        00:00:00
-                    </h1>
-                    <div class="flex items-center justify-center md:justify-start gap-2">
-                        <div class="w-1.5 h-1.5 bg-brand-green rounded-full animate-pulse"></div>
-                        <p id="date" class="text-brand-blue font-medium text-sm uppercase tracking-[0.2em] opacity-90"></p>
-                    </div>
-                </div>
+        <div class="flex items-center gap-6">
+            <div class="relative group cursor-pointer hover:scale-105 transition-transform">
+                <div class="absolute -inset-2 bg-brand-blue/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                <img src="https://pr.vizwise.com.br/financeiro/assets/images/logo.svg" alt="Logo" class="h-10 relative drop-shadow-lg">
             </div>
-
-            <!-- Search Bar Modern (Rounded) -->
-            <form id="search-form" action="https://www.google.com/search" class="w-full max-w-xl relative group z-20">
-                <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-blue via-brand-purple to-brand-pink rounded-full opacity-20 group-focus-within:opacity-100 blur transition duration-700 group-hover:opacity-50"></div>
-                <div class="relative flex items-center glass-input rounded-full">
-                    <i class="ph-duotone ph-magnifying-glass absolute left-5 text-gray-400 text-xl group-focus-within:text-brand-blue dark:group-focus-within:text-white transition-colors"></i>
-                    <input 
-                        id="search-bar" 
-                        name="q" 
-                        type="text" 
-                        autocomplete="off"
-                        placeholder="Pesquise no Google..." 
-                        class="w-full bg-transparent border-none rounded-full py-3.5 pl-14 pr-14 text-gray-800 dark:text-white text-base placeholder-gray-500 focus:ring-0 focus:outline-none"
-                    />
-                    <button type="submit" class="absolute right-2 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
-                        <i class="ph-bold ph-arrow-right"></i>
-                    </button>
-                </div>
-            </form>
-
-            <!-- Navigation Buttons & Theme Toggle -->
-            <div class="flex flex-wrap justify-center gap-4">
-                
-                <!-- Toggle: Agenda -->
-                <button id="toggle-calendar-btn" class="glass-btn relative overflow-hidden group flex items-center gap-2.5 px-6 py-3 rounded-full transition-all active:scale-95 shadow-lg backdrop-blur-md">
-                    <div class="absolute inset-0 bg-brand-blue/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                    <i class="ph-duotone ph-calendar-blank text-xl text-brand-blue group-hover:text-brand-blue dark:group-hover:text-white transition-colors relative z-10"></i>
-                    <span class="text-sm font-medium relative z-10 group-hover:text-black dark:group-hover:text-white transition-colors">Agenda</span>
-                </button>
-                
-                <!-- Toggle: Sistemas -->
-                <button id="toggle-cards-btn" class="glass-btn relative overflow-hidden group flex items-center gap-2.5 px-6 py-3 rounded-full transition-all active:scale-95 shadow-lg backdrop-blur-md">
-                    <div class="absolute inset-0 bg-brand-green/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                    <i class="ph-duotone ph-cards text-xl text-brand-green group-hover:text-brand-green dark:group-hover:text-white transition-colors relative z-10"></i>
-                    <span class="text-sm font-medium relative z-10 group-hover:text-black dark:group-hover:text-white transition-colors">Sistemas</span>
-                </button>
-
-                <!-- Toggle: Theme (Light/Dark) -->
-                <button id="theme-toggle-btn" class="glass-btn relative overflow-hidden group flex items-center justify-center w-12 h-12 rounded-full transition-all active:scale-95 shadow-lg backdrop-blur-md hover:border-brand-purple/50">
-                     <div class="absolute inset-0 bg-brand-purple/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                     <i id="theme-icon" class="ph-duotone ph-moon text-xl text-brand-purple group-hover:text-brand-purple dark:group-hover:text-white transition-colors relative z-10"></i>
-                </button>
+            
+            <div class="hidden md:flex flex-col border-l border-gray-300 dark:border-gray-700 pl-6 h-10 justify-center">
+                <h1 id="clock" class="font-mono text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-700 to-gray-400 dark:from-white dark:to-gray-400 tabular-nums leading-none">00:00:00</h1>
+                <p id="date" class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-blue opacity-80 leading-none mt-1"></p>
             </div>
         </div>
 
-        <!-- Calendar Section -->
-        <div id="calendar-container" class="section-content w-full mb-12 collapsed">
-            <div class="glass-card rounded-3xl p-1.5 overflow-hidden">
-                <div class="bg-white dark:bg-dark-900 rounded-[20px] overflow-hidden relative transition-colors duration-300">
-                    <!-- Tech border accent -->
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-blue via-brand-purple to-brand-pink opacity-50"></div>
+        <form id="search-form" class="flex-1 max-w-lg mx-4 relative group">
+            
+            <div class="absolute -inset-0.5 bg-gradient-to-r from-brand-blue via-brand-purple to-brand-pink rounded-full opacity-20 group-focus-within:opacity-100 blur transition duration-700 group-hover:opacity-50"></div>
+            
+            <div class="relative flex items-center glass-input rounded-full h-11 z-10">
+                <i class="ph-duotone ph-magnifying-glass absolute left-4 text-gray-400 text-lg group-focus-within:text-brand-blue dark:group-focus-within:text-white transition-colors"></i>
+                <input id="search-bar" name="q" type="text" autocomplete="off" placeholder="Pesquisar..." 
+                    class="w-full bg-transparent border-none rounded-full py-2 pl-12 pr-12 text-sm focus:ring-0 placeholder-gray-500 text-gray-800 dark:text-white">
+                <button type="submit" class="absolute right-2 p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                    <i class="ph-bold ph-arrow-right"></i>
+                </button>
+            </div>
+        </form>
+
+        <div class="flex items-center gap-3">
+            <div class="flex bg-white/30 dark:bg-black/20 p-1 rounded-full border border-gray-200/50 dark:border-white/5 backdrop-blur-md">
+                <button id="tab-agenda-btn" class="glass-btn h-9 px-5 rounded-full flex items-center gap-2 text-xs font-bold uppercase tracking-wide hover:bg-white/50 dark:hover:bg-white/10" onclick="switchTab('agenda')">
+                    <i class="ph-duotone ph-calendar-blank text-lg"></i>
+                    <span class="hidden xl:inline">Agenda</span>
+                </button>
+                <div class="w-2"></div>
+                <button id="tab-sistemas-btn" class="glass-btn h-9 px-5 rounded-full flex items-center gap-2 text-xs font-bold uppercase tracking-wide hover:bg-white/50 dark:hover:bg-white/10" onclick="switchTab('sistemas')">
+                    <i class="ph-duotone ph-cards text-lg"></i>
+                    <span class="hidden xl:inline">Sistemas</span>
+                </button>
+            </div>
+
+            <div class="w-px h-8 bg-gray-300 dark:bg-gray-700 mx-1"></div>
+            
+            <button id="theme-toggle-btn" class="glass-btn w-10 h-10 rounded-full flex items-center justify-center hover:shadow-lg transition-all hover:text-brand-purple dark:hover:text-brand-purple hover:border-brand-purple/50">
+                <i id="theme-icon" class="ph-duotone ph-moon text-lg"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 flex overflow-hidden p-4 relative z-10 w-full max-w-[1920px] mx-auto">
+        
+        <section id="panel-agenda" class="panel panel-inactive h-full flex flex-col">
+            <div class="glass-card rounded-2xl p-1 h-full flex flex-col overflow-hidden relative shadow-2xl">
+                <div class="bg-white dark:bg-dark-900 rounded-xl w-full h-full relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-blue via-brand-purple to-brand-pink opacity-60 z-10"></div>
                     <iframe 
-                        src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&showPrint=0&src=bWF0aGV1cy52aXp3aXNlQGdtYWlsLmNvbQ&src=cHQuYnJhemlsaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY_Y29t&src=ZmFiaWFub2Zhc3RzaXN0ZW1hc0BnbWFpbC5jb20&color=%233b82f6&color=%2310b981&color=%23f97316&bgcolor=%230a0a0a" 
+                        src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&showPrint=0&showTitle=0&showNav=1&showDate=1&showTabs=1&showCalendars=0&showTz=0&src=bWF0aGV1cy52aXp3aXNlQGdtYWlsLmNvbQ&src=cHQuYnJhemlsaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY_Y29t&src=ZmFiaWFub2Zhc3RzaXN0ZW1hc0BnbWFpbC5jb20&color=%233b82f6&color=%2310b981&color=%23f97316&bgcolor=%230a0a0a" 
                         style="border: 0" 
-                        width="100%" 
-                        height="600" 
+                        class="w-full h-full grayscale-[0.3] hover:grayscale-0 transition-all duration-500 opacity-90 hover:opacity-100"
                         frameborder="0" 
-                        scrolling="no"
-                        class="grayscale-[0.5] hover:grayscale-0 transition-all duration-500 mix-blend-multiply dark:mix-blend-normal opacity-90 hover:opacity-100">
+                        scrolling="no">
                     </iframe>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Grid Section -->
-        <div id="links-wrapper" class="section-content collapsed">
-            <div class="flex items-center justify-center gap-2 mb-8 opacity-50 hover:opacity-100 transition-opacity">
-                <i class="ph-duotone ph-hand-grabbing text-xl"></i>
-                <span class="text-[10px] font-mono uppercase tracking-[0.3em]">Drag to Reorder</span>
+        <section id="panel-sistemas" class="panel panel-active h-full flex flex-col">
+            <div class="flex-1 overflow-y-auto pr-2 flex flex-col scroll-area">
+                <div id="sortable-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 pb-10 m-auto w-full max-w-[1600px] p-4">
+                    
+                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-blue/40" data-id="card-pr">
+                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-blue to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
+                        <div class="p-5 handle cursor-grab active:cursor-grabbing">
+                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-duotone ph-map-pin text-brand-blue text-2xl"></i>
+                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Paraná</h2>
+                                </div>
+                                <div class="text-[9px] font-mono text-brand-blue border border-brand-blue/30 px-1 rounded">SYS.01</div>
+                            </div>
+                            <ul class="space-y-1.5">
+                                <li><a href="https://pr.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-blue hover:text-brand-blue">NOTAS</a></li>
+                                <li><a href="https://pr.vizwise.com.br/protesto/open.do?action=open&sys=PRO" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-blue hover:text-brand-blue">PROTESTO</a></li>
+                                <li><a href="https://pr.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-blue hover:text-brand-blue">FINANCEIRO</a></li>
+                                <li><a href="https://pr.vizwise.com.br/rcpn/open.do?action=open&sys=RCP" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-blue hover:text-brand-blue">RCPN</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-green/40" data-id="card-ms">
+                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-green to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
+                        <div class="p-5 handle cursor-grab active:cursor-grabbing">
+                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-duotone ph-map-pin text-brand-green text-2xl"></i>
+                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Mato Grosso</h2>
+                                </div>
+                                <div class="text-[9px] font-mono text-brand-green border border-brand-green/30 px-1 rounded">SYS.02</div>
+                            </div>
+                            <ul class="space-y-1.5">
+                                <li><a href="https://ms.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-green hover:text-brand-green">NOTAS</a></li>
+                                <li><a href="https://ms.vizwise.com.br/protesto/open.do?action=open&sys=PRO" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-green hover:text-brand-green">PROTESTO</a></li>
+                                <li><a href="https://ms.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-green hover:text-brand-green">FINANCEIRO</a></li>
+                                <li><a href="https://ms.vizwise.com.br/senha/open.do?sys=SEN" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-green hover:text-brand-green">SENHAS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-purple/40" data-id="card-mg">
+                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-purple to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
+                        <div class="p-5 handle cursor-grab active:cursor-grabbing">
+                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-duotone ph-map-pin text-brand-purple text-2xl"></i>
+                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Minas Gerais</h2>
+                                </div>
+                                <div class="text-[9px] font-mono text-brand-purple border border-brand-purple/30 px-1 rounded">SYS.03</div>
+                            </div>
+                            <ul class="space-y-1.5">
+                                <li><a href="https://mg.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-purple hover:text-brand-purple">NOTAS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl overflow-hidden group hover:border-gray-400/40" data-id="card-al">
+                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
+                        <div class="p-5 handle cursor-grab active:cursor-grabbing">
+                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-duotone ph-map-pin text-gray-400 text-2xl"></i>
+                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Alagoas</h2>
+                                </div>
+                                <div class="text-[9px] font-mono text-gray-500 border border-gray-400/30 px-1 rounded">SYS.04</div>
+                            </div>
+                            <ul class="space-y-1.5">
+                                <li><a href="https://al.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-gray-400 hover:text-white">NOTAS</a></li>
+                                <li><a href="https://al.vizwise.com.br/protesto/open.do?action=open&sys=PRO" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-gray-400 hover:text-white">PROTESTO</a></li>
+                                <li><a href="https://al.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-gray-400 hover:text-white">FINANCEIRO</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-orange/40" data-id="card-ba">
+                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-orange to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
+                        <div class="p-5 handle cursor-grab active:cursor-grabbing">
+                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-duotone ph-map-pin text-brand-orange text-2xl"></i>
+                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Bahia</h2>
+                                </div>
+                                <div class="text-[9px] font-mono text-brand-orange border border-brand-orange/30 px-1 rounded">SYS.05</div>
+                            </div>
+                            <ul class="space-y-1.5">
+                                <li><a href="https://bahia.vizwise.com.br/notas/open.do?sys=NOT" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">NOTAS</a></li>
+                                <li><a href="https://bahia.vizwise.com.br/protesto/open.do?sys=PRO" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">PROTESTO</a></li>
+                                <li><a href="https://bahia.vizwise.com.br/financeiro/open.do?sys=FIN" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">FINANCEIRO</a></li>
+                                <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=IMO" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">IMÓVEIS</a></li>
+                                <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=SPJ" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">PJ</a></li>
+                                <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=RTD" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">RTD</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-pink/40" data-id="card-links">
+                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-pink to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
+                        <div class="p-5 handle cursor-grab active:cursor-grabbing">
+                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-duotone ph-link text-brand-pink text-2xl"></i>
+                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Links Úteis</h2>
+                                </div>
+                                <div class="text-[9px] font-mono text-brand-pink border border-brand-pink/30 px-1 rounded">DB.01</div>
+                            </div>
+                            <ul class="space-y-1.5">
+                                <li><a href="https://drive.google.com/drive/folders/1WJykw18G3YTD0hMBs_oSLKY9AVr2p0Pg?usp=drive_link" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-pink hover:text-brand-pink">DRIVE SISTEMAS</a></li>
+                                <li><a href="https://docs.google.com/spreadsheets/d/1rOkWRdZIWi3x9gv0sy558I9aM_dZdaXTTsqinfVqDUY/edit?usp=drive_link" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-pink hover:text-brand-pink">PLANILHA LINKS</a></li>
+                                <li><a href="https://drive.google.com/drive/folders/1s1Bd4Qacp1LravulgEnUoMUsIVL38tWg?usp=drive_link" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-pink hover:text-brand-pink">MANUAIS</a></li>
+                                <li><a href="https://drive.google.com/drive/folders/1Uc9b5isCkuQRWmnf1x32CmoquiN6xe5L?usp=drive_link" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-pink hover:text-brand-pink">VÍDEOS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-red/40" data-id="card-chats">
+                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-red to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
+                        <div class="p-5 handle cursor-grab active:cursor-grabbing">
+                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-duotone ph-chats-circle text-brand-red text-2xl"></i>
+                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Chats</h2>
+                                </div>
+                                <div class="text-[9px] font-mono text-brand-red border border-brand-red/30 px-1 rounded">COM.01</div>
+                            </div>
+                            <ul class="space-y-1.5">
+                                <li><a href="https://web.whatsapp.com/" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-red hover:text-brand-red">WHATSAPP</a></li>
+                                <li><a href="https://appchat.vizwise.com.br/#/atendimento" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-red hover:text-brand-red">VIZCHAT</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-indigo/40" data-id="card-avulsos">
+                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-indigo to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
+                        <div class="p-5 handle cursor-grab active:cursor-grabbing">
+                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
+                                <div class="flex items-center gap-3">
+                                    <i class="ph-duotone ph-nut text-brand-indigo text-2xl"></i>
+                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Avulsos</h2>
+                                </div>
+                                <div class="text-[9px] font-mono text-brand-indigo border border-brand-indigo/30 px-1 rounded">EXT.01</div>
+                            </div>
+                            <ul class="space-y-1.5">
+                                <li><a href="http://al.vizwise.com.br:3000" title="A senha para acesso está no drive." target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-indigo hover:text-brand-indigo">USO DO SERVIDOR</a></li>
+                                <li><a href="https://ms.vizwise.com.br/servicos/open.do?sys=SER" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-indigo hover:text-brand-indigo">CERTIDÃO</a></li>
+                                <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=SOL" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-indigo hover:text-brand-indigo">REQUISIÇÕES</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div id="sortable-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 pb-20">
-                
-                <!-- Card: PARANÁ -->
-                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-blue/40" data-id="card-pr">
-                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-blue to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#3b82f6] transition-all duration-500"></div>
-                    
-                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
-                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <i class="ph-duotone ph-map-pin text-brand-blue text-3xl drop-shadow-[0_0_8px_rgba(59,130,246,0.3)] dark:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]"></i>
-                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Paraná</h2>
-                            </div>
-                            <div class="text-[9px] font-mono text-brand-blue border border-brand-blue/30 px-1.5 py-0.5 rounded">SYS.01</div>
-                        </div>
-
-                        <ul class="space-y-2.5">
-                            <li>
-                                <a href="https://pr.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-blue hover:border-l-brand-blue hover:bg-brand-blue/5 dark:hover:bg-brand-blue/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all duration-200">
-                                    > NOTAS
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://pr.vizwise.com.br/protesto/open.do?action=open&sys=PRO" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-blue hover:border-l-brand-blue hover:bg-brand-blue/5 dark:hover:bg-brand-blue/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all duration-200">
-                                    > PROTESTO
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://pr.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-blue hover:border-l-brand-blue hover:bg-brand-blue/5 dark:hover:bg-brand-blue/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all duration-200">
-                                    > FINANCEIRO
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://pr.vizwise.com.br/rcpn/open.do?action=open&sys=RCP" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-blue hover:border-l-brand-blue hover:bg-brand-blue/5 dark:hover:bg-brand-blue/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(59,130,246,0.1)] transition-all duration-200">
-                                    > RCPN
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Card: MS -->
-                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-green/40" data-id="card-ms">
-                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-green to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#10b981] transition-all duration-500"></div>
-                    
-                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
-                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <i class="ph-duotone ph-map-pin text-brand-green text-3xl drop-shadow-[0_0_8px_rgba(16,185,129,0.3)] dark:drop-shadow-[0_0_8px_rgba(16,185,129,0.8)]"></i>
-                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Mato Grosso</h2>
-                            </div>
-                            <div class="text-[9px] font-mono text-brand-green border border-brand-green/30 px-1.5 py-0.5 rounded">SYS.02</div>
-                        </div>
-
-                        <ul class="space-y-2.5">
-                            <li><a href="https://ms.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-green hover:border-l-brand-green hover:bg-brand-green/5 dark:hover:bg-brand-green/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-200">> NOTAS</a></li>
-                            <li><a href="https://ms.vizwise.com.br/protesto/open.do?action=open&sys=PRO" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-green hover:border-l-brand-green hover:bg-brand-green/5 dark:hover:bg-brand-green/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-200">> PROTESTO</a></li>
-                            <li><a href="https://ms.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-green hover:border-l-brand-green hover:bg-brand-green/5 dark:hover:bg-brand-green/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-200">> FINANCEIRO</a></li>
-                            <li><a href="https://ms.vizwise.com.br/senha/open.do?sys=SEN" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-green hover:border-l-brand-green hover:bg-brand-green/5 dark:hover:bg-brand-green/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(16,185,129,0.1)] transition-all duration-200">> SENHAS</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Card: MG -->
-                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-purple/40" data-id="card-mg">
-                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-purple to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#a855f7] transition-all duration-500"></div>
-                    
-                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
-                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <i class="ph-duotone ph-map-pin text-brand-purple text-3xl drop-shadow-[0_0_8px_rgba(168,85,247,0.3)] dark:drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]"></i>
-                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Minas Gerais</h2>
-                            </div>
-                            <div class="text-[9px] font-mono text-brand-purple border border-brand-purple/30 px-1.5 py-0.5 rounded">SYS.03</div>
-                        </div>
-
-                        <ul class="space-y-2.5">
-                            <li><a href="https://mg.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-purple hover:border-l-brand-purple hover:bg-brand-purple/5 dark:hover:bg-brand-purple/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(168,85,247,0.1)] transition-all duration-200">> NOTAS</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Card: ALAGOAS -->
-                <div class="glass-card rounded-2xl overflow-hidden group hover:border-gray-400/40" data-id="card-al">
-                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#9ca3af] transition-all duration-500"></div>
-                    
-                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
-                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <i class="ph-duotone ph-map-pin text-gray-400 text-3xl drop-shadow-[0_0_8px_rgba(156,163,175,0.3)] dark:drop-shadow-[0_0_8px_rgba(156,163,175,0.8)]"></i>
-                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Alagoas</h2>
-                            </div>
-                            <div class="text-[9px] font-mono text-gray-500 border border-gray-400/30 px-1.5 py-0.5 rounded">SYS.04</div>
-                        </div>
-
-                        <ul class="space-y-2.5">
-                            <li><a href="https://al.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-gray-700 dark:hover:text-white hover:border-l-gray-500 dark:hover:border-l-white hover:bg-gray-100 dark:hover:bg-white/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-200">> NOTAS</a></li>
-                            <li><a href="https://al.vizwise.com.br/protesto/open.do?action=open&sys=PRO" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-gray-700 dark:hover:text-white hover:border-l-gray-500 dark:hover:border-l-white hover:bg-gray-100 dark:hover:bg-white/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-200">> PROTESTO</a></li>
-                            <li><a href="https://al.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-gray-700 dark:hover:text-white hover:border-l-gray-500 dark:hover:border-l-white hover:bg-gray-100 dark:hover:bg-white/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all duration-200">> FINANCEIRO</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Card: LINKS -->
-                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-pink/40" data-id="card-links">
-                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-pink to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#ec4899] transition-all duration-500"></div>
-                    
-                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
-                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <i class="ph-duotone ph-link text-brand-pink text-3xl drop-shadow-[0_0_8px_rgba(236,72,153,0.3)] dark:drop-shadow-[0_0_8px_rgba(236,72,153,0.8)]"></i>
-                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Links Úteis</h2>
-                            </div>
-                            <div class="text-[9px] font-mono text-brand-pink border border-brand-pink/30 px-1.5 py-0.5 rounded">DB.01</div>
-                        </div>
-
-                        <ul class="space-y-2.5">
-                            <li><a href="https://drive.google.com/drive/folders/1WJykw18G3YTD0hMBs_oSLKY9AVr2p0Pg?usp=drive_link" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-pink hover:border-l-brand-pink hover:bg-brand-pink/5 dark:hover:bg-brand-pink/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(236,72,153,0.1)] transition-all duration-200">> DRIVE SISTEMAS</a></li>
-                            <li><a href="https://docs.google.com/spreadsheets/d/1rOkWRdZIWi3x9gv0sy558I9aM_dZdaXTTsqinfVqDUY/edit?usp=drive_link" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-pink hover:border-l-brand-pink hover:bg-brand-pink/5 dark:hover:bg-brand-pink/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(236,72,153,0.1)] transition-all duration-200">> PLANILHA LINKS</a></li>
-                            <li><a href="https://drive.google.com/drive/folders/1s1Bd4Qacp1LravulgEnUoMUsIVL38tWg?usp=drive_link" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-pink hover:border-l-brand-pink hover:bg-brand-pink/5 dark:hover:bg-brand-pink/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(236,72,153,0.1)] transition-all duration-200">> MANUAIS</a></li>
-                            <li><a href="https://drive.google.com/drive/folders/1Uc9b5isCkuQRWmnf1x32CmoquiN6xe5L?usp=drive_link" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-pink hover:border-l-brand-pink hover:bg-brand-pink/5 dark:hover:bg-brand-pink/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(236,72,153,0.1)] transition-all duration-200">> VÍDEOS</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Card: CHATS -->
-                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-red/40" data-id="card-chats">
-                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-red to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#ef4444] transition-all duration-500"></div>
-                    
-                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
-                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <i class="ph-duotone ph-chats-circle text-brand-red text-3xl drop-shadow-[0_0_8px_rgba(239,68,68,0.3)] dark:drop-shadow-[0_0_8px_rgba(239,68,68,0.8)]"></i>
-                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Chats</h2>
-                            </div>
-                            <div class="text-[9px] font-mono text-brand-red border border-brand-red/30 px-1.5 py-0.5 rounded">COM.01</div>
-                        </div>
-
-                        <ul class="space-y-2.5">
-                            <li><a href="https://web.whatsapp.com/" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-red hover:border-l-brand-red hover:bg-brand-red/5 dark:hover:bg-brand-red/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(239,68,68,0.1)] transition-all duration-200">> WHATSAPP</a></li>
-                            <li><a href="https://appchat.vizwise.com.br/#/atendimento" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-red hover:border-l-brand-red hover:bg-brand-red/5 dark:hover:bg-brand-red/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(239,68,68,0.1)] transition-all duration-200">> VIZCHAT</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Card: AVULSOS -->
-                <div class="glass-card rounded-2xl overflow-hidden group hover:border-brand-indigo/40" data-id="card-avulsos">
-                    <div class="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-brand-indigo to-transparent opacity-50 group-hover:opacity-100 group-hover:shadow-[0_0_15px_#6366f1] transition-all duration-500"></div>
-                    
-                    <div class="p-6 handle cursor-grab active:cursor-grabbing relative z-10">
-                        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700/30 pb-4 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <i class="ph-duotone ph-nut text-brand-indigo text-3xl drop-shadow-[0_0_8px_rgba(99,102,241,0.3)] dark:drop-shadow-[0_0_8px_rgba(99,102,241,0.8)]"></i>
-                                <h2 class="text-lg font-bold text-gray-800 dark:text-white tracking-wide">Avulsos</h2>
-                            </div>
-                            <div class="text-[9px] font-mono text-brand-indigo border border-brand-indigo/30 px-1.5 py-0.5 rounded">EXT.01</div>
-                        </div>
-
-                        <ul class="space-y-2.5">
-                            <li><a href="http://al.vizwise.com.br:3000" title="A senha para acesso está no drive." target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-indigo hover:border-l-brand-indigo hover:bg-brand-indigo/5 dark:hover:bg-brand-indigo/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] transition-all duration-200">> USO DO SERVIDOR</a></li>
-                            <li><a href="https://ms.vizwise.com.br/servicos/open.do?sys=SER" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-indigo hover:border-l-brand-indigo hover:bg-brand-indigo/5 dark:hover:bg-brand-indigo/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] transition-all duration-200">> CERTIDÃO</a></li>
-                            <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=SOL" target="_blank" class="cyber-link-hover block w-full px-4 py-2.5 border-l-2 border-l-gray-300 dark:border-l-gray-700/50 bg-gray-50/50 dark:bg-dark-950/40 text-gray-500 dark:text-gray-400 font-mono text-sm uppercase tracking-wider hover:text-brand-indigo hover:border-l-brand-indigo hover:bg-brand-indigo/5 dark:hover:bg-brand-indigo/5 hover:shadow-sm dark:hover:shadow-[0_0_15px_rgba(99,102,241,0.1)] transition-all duration-200">> REQUISIÇÕES</a></li>
-                        </ul>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
+        </section>
     </main>
 
-    <!-- Scripts Logic -->
     <script>
-        // --- 1. Clock Logic ---
+        // --- Clock ---
         const clockElement = document.getElementById('clock');
         const dateElement = document.getElementById('date');
         
         function updateClock() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            clockElement.innerText = timeString;
-
-            const dateString = now.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            dateElement.innerText = dateString;
+            clockElement.innerText = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            dateElement.innerText = now.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }).replace('.', '');
         }
         setInterval(updateClock, 1000);
-        updateClock(); 
+        updateClock();
 
-        // --- 2. Search Logic ---
+        // --- Search ---
         const searchForm = document.getElementById('search-form');
         const searchInput = document.getElementById('search-bar');
-
         searchForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const query = searchInput.value.trim();
             if (!query) return;
-
-            if (query.startsWith('http://') || query.startsWith('https://')) {
-                window.location.href = query;
-            } else if (query.includes('.') && !query.includes(' ')) {
-                window.location.href = 'https://' + query;
-            } else {
-                window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
-            }
+            if (query.startsWith('http')) window.location.href = query;
+            else if (query.includes('.') && !query.includes(' ')) window.location.href = 'https://' + query;
+            else window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
         });
-
         document.addEventListener('keydown', (e) => {
             if (e.key === '/' && document.activeElement !== searchInput) {
-                e.preventDefault();
-                searchInput.focus();
-            }
-            if (e.key === 'Escape') {
-                searchInput.blur();
-                searchInput.value = '';
+                e.preventDefault(); searchInput.focus();
             }
         });
 
-        // --- 3. Toggle Section Logic (Agenda/Sistemas) ---
-        function setupToggle(btnId, containerId, storageKey) {
-            const btn = document.getElementById(btnId);
-            const container = document.getElementById(containerId);
+        // --- Tabs Logic (Switch View) ---
+        const panelAgenda = document.getElementById('panel-agenda');
+        const panelSistemas = document.getElementById('panel-sistemas');
+        const btnAgenda = document.getElementById('tab-agenda-btn');
+        const btnSistemas = document.getElementById('tab-sistemas-btn');
+
+        function switchTab(tabName) {
+            if (tabName === 'agenda') {
+                // Show Agenda
+                panelAgenda.classList.remove('panel-inactive');
+                panelAgenda.classList.add('panel-active');
+                
+                // Hide Sistemas
+                panelSistemas.classList.remove('panel-active');
+                panelSistemas.classList.add('panel-inactive');
+                
+                // Buttons
+                btnAgenda.classList.add('active-tab-agenda');
+                btnSistemas.classList.remove('active-tab-sistemas');
+                
+            } else {
+                // Show Sistemas
+                panelSistemas.classList.remove('panel-inactive');
+                panelSistemas.classList.add('panel-active');
+
+                // Hide Agenda
+                panelAgenda.classList.remove('panel-active');
+                panelAgenda.classList.add('panel-inactive');
+
+                // Buttons
+                btnSistemas.classList.add('active-tab-sistemas');
+                btnAgenda.classList.remove('active-tab-agenda');
+            }
             
-            const updateUI = (isOpen) => {
-                if (isOpen) {
-                    container.classList.remove('collapsed');
-                    btn.classList.add('active-btn'); // Use CSS class for active state
-                    
-                    // Borders for specific buttons
-                    if(btnId.includes('calendar')) btn.classList.add('border-brand-blue/30');
-                    if(btnId.includes('cards')) btn.classList.add('border-brand-green/30');
-                } else {
-                    container.classList.add('collapsed');
-                    btn.classList.remove('active-btn');
-                    btn.classList.remove('border-brand-blue/30', 'border-brand-green/30');
-                }
-            };
-
-            const savedState = localStorage.getItem(storageKey) === 'true';
-            updateUI(savedState);
-
-            btn.addEventListener('click', () => {
-                const isCollapsed = container.classList.contains('collapsed');
-                const newState = isCollapsed; // If collapsed, new state is open (true)
-                updateUI(newState);
-                localStorage.setItem(storageKey, newState);
-            });
+            // Persist
+            localStorage.setItem('vizwise_active_tab', tabName);
         }
 
-        setupToggle('toggle-calendar-btn', 'calendar-container', 'vizwise_calendar_open');
-        setupToggle('toggle-cards-btn', 'links-wrapper', 'vizwise_cards_open');
+        // Initialize Tab
+        const savedTab = localStorage.getItem('vizwise_active_tab') || 'sistemas'; // Default to Sistemas
+        switchTab(savedTab);
 
-        // --- 4. Theme Logic (Light/Dark Switch) ---
+
+        // --- Theme ---
         const themeBtn = document.getElementById('theme-toggle-btn');
         const themeIcon = document.getElementById('theme-icon');
-        const htmlElement = document.documentElement;
+        const html = document.documentElement;
 
         function updateThemeIcon(isDark) {
-            if (isDark) {
-                themeIcon.classList.replace('ph-sun', 'ph-moon');
-            } else {
-                themeIcon.classList.replace('ph-moon', 'ph-sun');
-            }
+            themeIcon.className = isDark ? 'ph-duotone ph-moon text-lg' : 'ph-duotone ph-sun text-lg';
         }
 
         function toggleTheme() {
-            const isDark = htmlElement.classList.toggle('dark');
+            const isDark = html.classList.toggle('dark');
             localStorage.setItem('vizwise_theme', isDark ? 'dark' : 'light');
             updateThemeIcon(isDark);
         }
 
-        // Initialize Theme
         const savedTheme = localStorage.getItem('vizwise_theme');
-        // Default to dark if no save, or if saved is 'dark'
-        if (savedTheme === 'light') {
-            htmlElement.classList.remove('dark');
-            updateThemeIcon(false);
-        } else {
-            htmlElement.classList.add('dark');
-            updateThemeIcon(true);
-        }
+        if (savedTheme === 'light') { html.classList.remove('dark'); updateThemeIcon(false); }
+        else { html.classList.add('dark'); updateThemeIcon(true); }
 
         themeBtn.addEventListener('click', toggleTheme);
 
-
-        // --- 5. Drag and Drop with Persistence ---
-        const grid = document.getElementById('sortable-grid');
-        new Sortable(grid, {
-            animation: 300,
-            ghostClass: 'sortable-ghost',
-            dragClass: 'sortable-drag',
+        // --- Sortable ---
+        new Sortable(document.getElementById('sortable-grid'), {
+            animation: 150,
+            ghostClass: 'opacity-50',
             handle: '.handle',
-            delay: 100, 
-            delayOnTouchOnly: true,
-            group: 'vizwise-dashboard', // Necessary for save
+            group: 'vizwise-dashboard',
             store: {
-                /**
-                 * Save order using data-id attribute
-                 */
-                get: function (sortable) {
+                get: (sortable) => {
                     const order = localStorage.getItem(sortable.options.group.name);
                     return order ? order.split('|') : [];
                 },
-                set: function (sortable) {
-                    const order = sortable.toArray();
-                    localStorage.setItem(sortable.options.group.name, order.join('|'));
+                set: (sortable) => {
+                    localStorage.setItem(sortable.options.group.name, sortable.toArray().join('|'));
                 }
             }
         });
-
     </script>
 </body>
 </html>
