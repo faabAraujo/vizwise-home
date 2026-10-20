@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR" data-theme="dark">
 
 <head>
-    <meta charset="utf-8" />
-    <title>Viz Wise - World Cup 2026</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viz Wise - Sistemas</title>
 
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        dark: { 950: '#050505', 900: '#0a0a0a', 800: '#171717', 700: '#262626' },
                         brand: {
-                            blue: '#3b82f6', green: '#10b981', purple: '#a855f7',
-                            pink: '#ec4899', orange: '#f97316', red: '#ef4444',
-                            indigo: '#6366f1', cyan: '#06b6d4'
+                            blue: '#60a5fa',
+                            green: '#34d399',
+                            purple: '#c084fc',
+                            pink: '#f472b6',
+                            orange: '#fb923c',
+                            red: '#f87171',
+                            indigo: '#818cf8',
+                            cyan: '#22d3ee'
                         }
                     }
                 }
@@ -33,215 +33,470 @@
         }
     </script>
 
+    <!-- Font Awesome & Phosphor Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- SortableJS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-    <link rel="icon" type="image/png" href="https://img.icons8.com/?size=100&id=59&format=png&color=FFD700">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .dark ::-webkit-scrollbar-thumb { background: #52525b; }
-        
-        .bg-hybrid {
-            background-color: #f8fafc;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            transition: background-color 0.5s ease;
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
-        .dark .bg-hybrid {
-            /* TEMA FIFA WORLD CUP 2026 - Background com Overlay Escuro */
-            background-image: 
-                linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)),
-                url('https://i.imgur.com/hEs72IE.jpeg');
+
+        /* Ocultar barra de rolagem global e interna */
+        ::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Variáveis de Tema (Glassmorphism) */
+        :root[data-theme="dark"] {
+            --glass-bg: rgba(0, 0, 0, 0.10);
+            --glass-border: rgba(255, 255, 255, 0.10);
+            --glass-hover-bg: rgba(0, 0, 0, 0.25);
+            --glass-hover-border: rgba(255, 255, 255, 0.17);
+            --glass-shadow: rgba(0, 0, 0, 0.30);
+            --glass-input-bg: rgba(0, 0, 0, 0.20);
+            --glass-input-focus: rgba(0, 0, 0, 0.35);
+            --glass-active: rgba(0, 0, 0, 0.40);
+            --glass-link-bg: rgba(0, 0, 0, 0.15);
+            --glass-link-hover: rgba(0, 0, 0, 0.25);
+            --overlay-bg: radial-gradient(circle at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.70) 100%);
+        }
+
+        :root[data-theme="light"] {
+            --glass-bg: rgba(255, 255, 255, 0.10);
+            --glass-border: rgba(255, 255, 255, 0.20);
+            --glass-hover-bg: rgba(255, 255, 255, 0.17);
+            --glass-hover-border: rgba(255, 255, 255, 0.30);
+            --glass-shadow: rgba(0, 0, 0, 0.05);
+            --glass-input-bg: rgba(255, 255, 255, 0.15);
+            --glass-input-focus: rgba(255, 255, 255, 0.25);
+            --glass-active: rgba(255, 255, 255, 0.30);
+            --glass-link-bg: rgba(255, 255, 255, 0.10);
+            --glass-link-hover: rgba(255, 255, 255, 0.20);
+            --overlay-bg: radial-gradient(circle at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.40) 100%);
+        }
+
+        /* Camadas de fundo para transição suave */
+        .bg-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
+            transition: opacity 1s ease-in-out;
+            z-index: -2;
         }
 
+        #bg-current { opacity: 1; }
+        #bg-next { opacity: 0; }
+
+        /* Overlay */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-bg);
+            z-index: -1;
+            pointer-events: none;
+            transition: background 0.3s ease;
+        }
+
+        /* Efeito Glassmorphism Dinâmico */
         .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .dark .glass-card {
-            background: rgba(10, 10, 10, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+
+        .glass-card-hover:hover {
+            background: var(--glass-hover-bg);
+            border-color: var(--glass-hover-border);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px 0 var(--glass-shadow);
         }
-        .glass-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
 
         .glass-input {
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--glass-input-bg);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
             transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
-        .dark .glass-input {
-            background: rgba(15, 15, 20, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: none;
-        }
+
         .glass-input:focus-within {
-            background: rgba(255, 255, 255, 0.95);
-            border-color: rgba(59, 130, 246, 0.5);
-        }
-        .dark .glass-input:focus-within {
-            background: rgba(20, 20, 25, 0.8);
-            border-color: rgba(255, 255, 255, 0.2);
+            background: var(--glass-input-focus);
+            border-color: var(--glass-hover-border);
+            box-shadow: 0 0 20px var(--glass-shadow);
         }
 
-        .glass-btn {
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.4);
-            color: #6b7280;
-            transition: all 0.3s ease;
-        }
-        .dark .glass-btn {
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(10, 10, 10, 0.4);
-            color: #a1a1aa;
-        }
-        
-        /* Active States for Tabs */
-        .glass-btn.active-tab-agenda {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: rgba(59, 130, 246, 0.6);
-            color: #3b82f6;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
-        }
-        .dark .glass-btn.active-tab-agenda {
-            background: rgba(59, 130, 246, 0.2);
-            color: #60a5fa;
-        }
-
-        .glass-btn.active-tab-sistemas {
-            background: rgba(16, 185, 129, 0.15);
-            border-color: rgba(16, 185, 129, 0.6);
-            color: #10b981;
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-        }
-        .dark .glass-btn.active-tab-sistemas {
-            background: rgba(16, 185, 129, 0.2);
-            color: #34d399;
-        }
-
-        /* --- Panel Transition Logic --- */
-        .panel {
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden;
-        }
-        .panel-active {
-            flex: 1 1 0%;
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-        .panel-inactive {
-            flex: 0 0 0%;
-            opacity: 0;
-            transform: translateY(10px) scale(0.98);
-            pointer-events: none;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-
-        /* --- HOVER EFFECT --- */
-        .cyber-link-hover {
-            position: relative;
-            overflow: hidden;
+        .glass-button {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
             transition: all 0.2s ease;
         }
-        .cyber-link-hover::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.4s ease;
-        }
-        .dark .cyber-link-hover::after {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
-        }
-        .cyber-link-hover:hover::after {
-            transform: translateX(100%);
-        }
-        .cyber-link-hover:hover {
-            background: rgba(59, 130, 246, 0.05);
-            padding-left: 1.25rem;
+
+        .glass-button:hover {
+            background: var(--glass-hover-bg);
+            border-color: var(--glass-hover-border);
+            transform: translateY(-2px);
         }
 
-        .dark .handle i.ph-dots-six-vertical {
-            color: #52525b; 
+        .glass-button:active {
+            transform: translateY(0);
+        }
+
+        .glass-button.active-tab {
+            background: var(--glass-active);
+            border-color: var(--glass-hover-border);
+            box-shadow: 0 0 18px var(--glass-shadow);
+            color: #ffffff;
+        }
+
+        .glass-link {
+            background: var(--glass-link-bg);
+            border: 1px solid var(--glass-border);
+            transition: all 0.2s ease;
+        }
+
+        .glass-link:hover {
+            background: var(--glass-link-hover);
+            border-color: var(--glass-hover-border);
+            padding-left: 0.75rem;
+        }
+
+        /* Transição de Painéis */
+        .panel {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .panel-active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .panel-inactive {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .spin-anim {
+            animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 
-<body class="bg-hybrid text-gray-700 dark:text-gray-300 h-screen w-screen overflow-hidden flex flex-col font-sans antialiased selection:bg-brand-blue selection:text-white">
+<!-- O body agora tem h-screen e overflow-hidden para remover rolagens globais -->
+<body class="h-screen w-screen text-white flex flex-col p-3 sm:p-4 md:p-6 select-none overflow-hidden">
 
-    <header class="h-24 shrink-0 px-6 flex items-center justify-between border-b border-gray-200/50 dark:border-white/5 relative z-20 backdrop-blur-sm bg-white/10 dark:bg-black/10">
+    <!-- Camadas para transição do plano de fundo -->
+    <div id="bg-current" class="bg-layer" style="background-image: url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80');"></div>
+    <div id="bg-next" class="bg-layer"></div>
+    <div class="bg-overlay"></div>
+
+    <!-- Cabeçalho Superior -->
+    <header class="w-full max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 z-10 shrink-0">
         
-        <div class="flex items-center gap-6">
-            <div class="relative group cursor-pointer hover:scale-105 transition-transform">
-                <div class="absolute -inset-2 bg-white/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition duration-500"></div>
-                <img src="https://assets.football-logos.cc/logos/tournaments/700x700/fifa-world-cup-2026--white.9ba8a004.png" alt="FIFA World Cup 2026 Logo" class="h-16 relative drop-shadow-lg">
+        <div class="flex items-center space-x-3 glass-card px-3 py-2 rounded-2xl">
+            <!-- LOGO -->
+            <div class="h-8 px-2 rounded-xl flex items-center justify-center gap-2 shadow-inner hover:bg-white/10 transition cursor-pointer">
+                <img src="https://pr.vizwise.com.br/images/logotipo-white.svg" alt="Logo Viz Wise" class="h-6 w-auto object-contain">
             </div>
-            
-            <div class="hidden md:flex flex-col border-l border-gray-300 dark:border-gray-700/50 pl-6 h-12 justify-center">
-                <h1 id="clock" class="font-mono text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-700 to-gray-400 dark:from-white dark:to-gray-400 tabular-nums leading-none">00:00:00</h1>
-                <p id="date" class="text-[10px] font-bold uppercase tracking-[0.2em] text-white opacity-80 leading-none mt-1"></p>
+
+            <div class="border-l border-white/20 pl-3">
+                <h1 class="text-sm font-semibold tracking-wide text-white">Viz Wise</h1>
+                <p id="bg-status" class="text-[10px] text-white/75 flex items-center gap-1.5 mt-0.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Carregando fundo...</span>
+                </p>
             </div>
         </div>
 
-        <form id="search-form" class="flex-1 max-w-lg mx-4 relative group">
-            
-            <div class="absolute -inset-0.5 bg-gradient-to-r from-white via-gray-300 to-white rounded-full opacity-10 group-focus-within:opacity-40 blur transition duration-700 group-hover:opacity-20"></div>
-            
-            <div class="relative flex items-center glass-input rounded-full h-11 z-10">
-                <i class="ph-duotone ph-magnifying-glass absolute left-4 text-gray-400 text-lg group-focus-within:text-white transition-colors"></i>
-                <input id="search-bar" name="q" type="text" autocomplete="off" placeholder="Pesquisar..." 
-                    class="w-full bg-transparent border-none rounded-full py-2 pl-12 pr-12 text-sm focus:ring-0 placeholder-gray-500 text-gray-800 dark:text-white">
-                <button type="submit" class="absolute right-2 p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
-                    <i class="ph-bold ph-arrow-right"></i>
+        <!-- Ações do Cabeçalho e Navegação de Abas -->
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-1.5">
+                <button id="tab-sistemas-btn" onclick="switchTab('sistemas')" class="glass-button px-3 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 text-white/90 hover:text-white">
+                    <i class="ph-duotone ph-cards text-sm"></i>
+                    <span class="hidden sm:inline">Sistemas</span>
                 </button>
-            </div>
-        </form>
-
-        <div class="flex items-center gap-3">
-            <div class="flex bg-white/30 dark:bg-black/30 p-1 rounded-full border border-gray-200/50 dark:border-white/5 backdrop-blur-md">
-                <button id="tab-agenda-btn" class="glass-btn h-9 px-5 rounded-full flex items-center gap-2 text-xs font-bold uppercase tracking-wide hover:bg-white/50 dark:hover:bg-white/10" onclick="switchTab('agenda')">
-                    <i class="ph-duotone ph-calendar-blank text-lg"></i>
-                    <span class="hidden xl:inline">Agenda</span>
-                </button>
-                <div class="w-2"></div>
-                <button id="tab-sistemas-btn" class="glass-btn h-9 px-5 rounded-full flex items-center gap-2 text-xs font-bold uppercase tracking-wide hover:bg-white/50 dark:hover:bg-white/10" onclick="switchTab('sistemas')">
-                    <i class="ph-duotone ph-cards text-lg"></i>
-                    <span class="hidden xl:inline">Sistemas</span>
+                <button id="tab-agenda-btn" onclick="switchTab('agenda')" class="glass-button px-3 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 text-white/90 hover:text-white">
+                    <i class="ph-duotone ph-calendar-blank text-sm"></i>
+                    <span class="hidden sm:inline">Agenda</span>
                 </button>
             </div>
 
-            <div class="w-px h-8 bg-gray-300 dark:bg-gray-700/50 mx-1"></div>
-            
-            <button id="theme-toggle-btn" class="glass-btn w-10 h-10 rounded-full flex items-center justify-center hover:shadow-lg transition-all hover:text-white dark:hover:text-white hover:border-white/50">
-                <i id="theme-icon" class="ph-duotone ph-moon text-lg"></i>
+            <div class="h-5 w-px bg-white/20 hidden sm:block"></div>
+
+            <!-- Botão de Tema -->
+            <button id="btn-theme" title="Alternar Tema" class="glass-button p-2 rounded-xl text-xs text-white/90 hover:text-white">
+                <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+            </button>
+
+            <!-- Botão de Recarregar Background -->
+            <button id="btn-refresh-bg" title="Alternar Imagem de Fundo" class="glass-button p-2 sm:px-3 sm:py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 text-white/90 hover:text-white">
+                <i id="icon-refresh-bg" class="fa-solid fa-arrows-rotate text-sm"></i>
+                <span class="hidden md:inline">Nova Imagem</span>
+            </button>
+
+            <!-- Modo de Tela Cheia -->
+            <button id="btn-fullscreen" title="Alternar Tela Cheia" class="glass-button p-2 rounded-xl text-xs text-white/90 hover:text-white">
+                <i class="fa-solid fa-expand text-sm"></i>
             </button>
         </div>
     </header>
 
-    <main class="flex-1 flex overflow-hidden p-6 relative z-10 w-full max-w-[1920px] mx-auto">
+    <!-- Conteúdo Central Ajustado para preencher a tela -->
+    <main class="w-full max-w-7xl mx-auto flex flex-col items-center z-10 gap-4 mt-4 flex-1 min-h-0">
         
-        <section id="panel-agenda" class="panel panel-inactive h-full flex flex-col">
-            <div class="glass-card rounded-2xl p-1 h-full flex flex-col overflow-hidden relative shadow-2xl">
-                <div class="bg-white dark:bg-dark-950 rounded-xl w-full h-full relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gray-700 via-white to-gray-700 opacity-60 z-10"></div>
+        <!-- Topo Central: Relógio e Pesquisa (Tamanhos Reduzidos para economizar espaço) -->
+        <div class="w-full flex flex-col items-center text-center gap-3 shrink-0">
+            <div class="space-y-0.5">
+                <div id="clock-time" class="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white drop-shadow-md tabular-nums">
+                    00:00:00
+                </div>
+                <div id="clock-date" class="text-xs sm:text-sm text-white/90 font-medium capitalize tracking-wide drop-shadow">
+                    --.--.----
+                </div>
+            </div>
+
+            <div class="w-full max-w-lg">
+                <form id="search-form" class="glass-input rounded-2xl p-1 flex items-center shadow-lg transition-all duration-300">
+                    <div class="pl-3 pr-1.5 text-white/70">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        placeholder="Pesquisar ou URL... (Aperte '/' para focar)" 
+                        autocomplete="off"
+                        class="w-full bg-transparent text-white placeholder-white/60 focus:outline-none px-1.5 py-1.5 text-sm font-normal"
+                    >
+                    <button type="submit" class="glass-button px-4 py-1.5 rounded-xl text-xs font-semibold text-white ml-1">
+                        Ir
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- PAINEL 1: SISTEMAS (Com grelha adaptada para não ter scroll) -->
+        <section id="panel-sistemas" class="panel panel-active w-full flex-1 min-h-0 flex-col mt-2">
+            <!-- Grid explicitly setting rows to fit inside the screen height -->
+            <div id="sortable-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-rows-8 md:grid-rows-4 lg:grid-rows-2 gap-3 w-full h-full pb-2">
+                
+                <!-- Card: Paraná -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col" data-id="card-pr">
+                    <div class="p-3 handle cursor-grab active:cursor-grabbing flex flex-col h-full overflow-hidden">
+                        <div class="flex items-center justify-between mb-2 border-b border-white/10 pb-2 shrink-0">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-brand-blue/20 border border-brand-blue/40 flex items-center justify-center">
+                                    <i class="ph-duotone ph-map-pin text-brand-blue text-sm"></i>
+                                </div>
+                                <h2 class="text-sm font-bold text-white tracking-wide">Paraná</h2>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[9px] font-mono text-brand-blue bg-brand-blue/15 border border-brand-blue/30 px-1.5 py-0.5 rounded-md">SYS.01</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-1.5 flex-1 overflow-y-auto no-scrollbar">
+                            <li><a href="https://pr.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">NOTAS</a></li>
+                            <li><a href="https://pr.vizwise.com.br/protesto/open.do?action=open&sys=PRO" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">PROTESTO</a></li>
+                            <li><a href="https://pr.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">FINANCEIRO</a></li>
+                            <li><a href="https://pr.vizwise.com.br/rcpn/open.do?action=open&sys=RCP" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">RCPN</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card: Mato Grosso -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col" data-id="card-ms">
+                    <div class="p-3 handle cursor-grab active:cursor-grabbing flex flex-col h-full overflow-hidden">
+                        <div class="flex items-center justify-between mb-2 border-b border-white/10 pb-2 shrink-0">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-brand-green/20 border border-brand-green/40 flex items-center justify-center">
+                                    <i class="ph-duotone ph-map-pin text-brand-green text-sm"></i>
+                                </div>
+                                <h2 class="text-sm font-bold text-white tracking-wide">Mato Grosso</h2>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[9px] font-mono text-brand-green bg-brand-green/15 border border-brand-green/30 px-1.5 py-0.5 rounded-md">SYS.02</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-1.5 flex-1 overflow-y-auto no-scrollbar">
+                            <li><a href="https://ms.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">NOTAS</a></li>
+                            <li><a href="https://ms.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">FINANCEIRO</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card: Minas Gerais -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col" data-id="card-mg">
+                    <div class="p-3 handle cursor-grab active:cursor-grabbing flex flex-col h-full overflow-hidden">
+                        <div class="flex items-center justify-between mb-2 border-b border-white/10 pb-2 shrink-0">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-brand-purple/20 border border-brand-purple/40 flex items-center justify-center">
+                                    <i class="ph-duotone ph-map-pin text-brand-purple text-sm"></i>
+                                </div>
+                                <h2 class="text-sm font-bold text-white tracking-wide">Minas Gerais</h2>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[9px] font-mono text-brand-purple bg-brand-purple/15 border border-brand-purple/30 px-1.5 py-0.5 rounded-md">SYS.03</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-1.5 flex-1 overflow-y-auto no-scrollbar">
+                            <li><a href="https://mg.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">NOTAS</a></li>
+                            <li><a href="https://app.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">FINANCEIRO</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card: HMG Bahia -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col" data-id="card-ba-homol">
+                    <div class="p-3 handle cursor-grab active:cursor-grabbing flex flex-col h-full overflow-hidden">
+                        <div class="flex items-center justify-between mb-2 border-b border-white/10 pb-2 shrink-0">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-brand-red/20 border border-brand-red/40 flex items-center justify-center">
+                                    <i class="ph-duotone ph-warning text-brand-red text-sm"></i>
+                                </div>
+                                <h2 class="text-sm font-bold text-white tracking-wide">HMG Bahia</h2>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[9px] font-mono text-brand-red bg-brand-red/20 border border-brand-red/40 px-1.5 py-0.5 rounded-md">SYS.HMG</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-1.5 flex-1 overflow-y-auto no-scrollbar">
+                            <li><a href="http://192.168.1.56/protestoba/open.do?sys=PRO" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-[11px] text-white/90 hover:text-white font-mono font-semibold tracking-wide">PROTESTO (NOVO)</a></li>
+                            <li><a href="http://192.168.1.56/spj/open.do?sys=SPJ" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-[11px] text-white/90 hover:text-white font-mono font-semibold tracking-wide">SPJ (NOVO)</a></li>
+                            <li><a href="http://192.168.1.56/rtd/open.do?sys=RTD" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-[11px] text-white/90 hover:text-white font-mono font-semibold tracking-wide">RTD (NOVO)</a></li>
+                            <li><a href="http://192.168.1.56/imoveis/open.do?sys=IMO" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-[11px] text-white/90 hover:text-white font-mono font-semibold tracking-wide">IMÓVEIS (NOVO)</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card: Bahia -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col" data-id="card-ba">
+                    <div class="p-3 handle cursor-grab active:cursor-grabbing flex flex-col h-full overflow-hidden">
+                        <div class="flex items-center justify-between mb-2 border-b border-white/10 pb-2 shrink-0">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-brand-orange/20 border border-brand-orange/40 flex items-center justify-center">
+                                    <i class="ph-duotone ph-map-pin text-brand-orange text-sm"></i>
+                                </div>
+                                <h2 class="text-sm font-bold text-white tracking-wide">Bahia</h2>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[9px] font-mono text-brand-orange bg-brand-orange/15 border border-brand-orange/30 px-1.5 py-0.5 rounded-md">SYS.05</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-1.5 flex-1 overflow-y-auto no-scrollbar">
+                            <li><a href="https://bahia.vizwise.com.br/notas/open.do?sys=NOT" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">NOTAS</a></li>
+                            <li><a href="https://bahia.vizwise.com.br/protesto/open.do?sys=PRO" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">PROTESTO</a></li>
+                            <li><a href="https://bahia.vizwise.com.br/financeiro/open.do?sys=FIN" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">FINANCEIRO</a></li>
+                            <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=IMO" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">IMÓVEIS</a></li>
+                            <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=SPJ" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">PJ</a></li>
+                            <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=RTD" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">RTD</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card: Links Úteis -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col" data-id="card-links">
+                    <div class="p-3 handle cursor-grab active:cursor-grabbing flex flex-col h-full overflow-hidden">
+                        <div class="flex items-center justify-between mb-2 border-b border-white/10 pb-2 shrink-0">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-brand-pink/20 border border-brand-pink/40 flex items-center justify-center">
+                                    <i class="ph-duotone ph-link text-brand-pink text-sm"></i>
+                                </div>
+                                <h2 class="text-sm font-bold text-white tracking-wide">Links Úteis</h2>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[9px] font-mono text-brand-pink bg-brand-pink/15 border border-brand-pink/30 px-1.5 py-0.5 rounded-md">DB.01</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-1.5 flex-1 overflow-y-auto no-scrollbar">
+                            <li><a href="https://drive.google.com/drive/folders/1WJykw18G3YTD0hMBs_oSLKY9AVr2p0Pg?usp=drive_link" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">DEV_</a></li>
+                            <li><a href="https://drive.google.com/drive/folders/1_eNVuM0iw_4N6SSfI9F9a3b_cRUYL4yD?usp=sharing" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">SUPORTE</a></li>
+                            <li><a href="https://docs.google.com/spreadsheets/d/1rOkWRdZIWi3x9gv0sy558I9aM_dZdaXTTsqinfVqDUY/edit?usp=drive_link" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-[11px] text-white/90 hover:text-white font-mono font-semibold tracking-wide">PLANILHA LINKS</a></li>
+                            <li><a href="https://drive.google.com/drive/folders/1s1Bd4Qacp1LravulgEnUoMUsIVL38tWg?usp=drive_link" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">MANUAIS</a></li>
+                            <li><a href="https://drive.google.com/drive/folders/1Uc9b5isCkuQRWmnf1x32CmoquiN6xe5L?usp=drive_link" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">GRAVAÇÕES</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card: Desenvolvedor -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col" data-id="card-dev">
+                    <div class="p-3 handle cursor-grab active:cursor-grabbing flex flex-col h-full overflow-hidden">
+                        <div class="flex items-center justify-between mb-2 border-b border-white/10 pb-2 shrink-0">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-brand-cyan/20 border border-brand-cyan/40 flex items-center justify-center">
+                                    <i class="ph-duotone ph-code text-brand-cyan text-sm"></i>
+                                </div>
+                                <h2 class="text-sm font-bold text-white tracking-wide">Desenvolvedor</h2>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[9px] font-mono text-brand-cyan bg-brand-cyan/15 border border-brand-cyan/30 px-1.5 py-0.5 rounded-md">DEV.01</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-1.5 flex-1 overflow-y-auto no-scrollbar">
+                            <li><a href="http://192.168.1.56/git/" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">GITEA (OFFLINE)</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card: Avulsos -->
+                <div class="glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col" data-id="card-avulsos">
+                    <div class="p-3 handle cursor-grab active:cursor-grabbing flex flex-col h-full overflow-hidden">
+                        <div class="flex items-center justify-between mb-2 border-b border-white/10 pb-2 shrink-0">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg bg-brand-indigo/20 border border-brand-indigo/40 flex items-center justify-center">
+                                    <i class="ph-duotone ph-nut text-brand-indigo text-sm"></i>
+                                </div>
+                                <h2 class="text-sm font-bold text-white tracking-wide">Avulsos</h2>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-[9px] font-mono text-brand-indigo bg-brand-indigo/15 border border-brand-indigo/30 px-1.5 py-0.5 rounded-md">EXT.01</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-1.5 flex-1 overflow-y-auto no-scrollbar">
+                            <li><a href="http://al.vizwise.com.br:3000" title="A senha para acesso está no drive." target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">USO DO SERVIDOR</a></li>
+                            <li><a href="https://app.vizwise.com.br/servicos/open.do?sys=SER" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">EMITIR CERTIDÃO</a></li>
+                            <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=SOL" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-[11px] text-white/90 hover:text-white font-mono font-semibold tracking-wide">GERENCIAMENTO</a></li>
+                            <li><a href="https://app.vizwise.com.br/senha/open.do?sys=SEN" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">SENHAS</a></li>
+                            <li><a href="https://web.whatsapp.com/" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">WHATSAPP</a></li>
+                            <li><a href="https://appchat.vizwise.com.br/#/atendimento" target="_blank" class="glass-link block px-2.5 py-1.5 rounded-lg text-xs text-white/90 hover:text-white font-mono font-semibold tracking-wide">VIZCHAT</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PAINEL 2: AGENDA -->
+        <section id="panel-agenda" class="panel panel-inactive w-full flex-1 flex-col mt-2 min-h-0">
+            <div class="glass-card rounded-3xl p-2 sm:p-3 w-full h-full flex flex-col overflow-hidden shadow-2xl">
+                <div class="rounded-2xl w-full h-full overflow-hidden bg-black/40">
                     <iframe 
                         src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FBahia&showPrint=0&showTitle=0&showNav=1&showDate=1&showTabs=1&showCalendars=0&showTz=0&src=bWF0aGV1cy52aXp3aXNlQGdtYWlsLmNvbQ&src=cHQuYnJhemlsaWFuI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY_Y29t&src=ZmFiaWFub2Zhc3RzaXN0ZW1hc0BnbWFpbC5jb20&color=%233b82f6&color=%2310b981&color=%23f97316&bgcolor=%230a0a0a" 
                         style="border: 0" 
-                        class="w-full h-full grayscale-[0.5] dark:grayscale-[0.7] hover:grayscale-0 transition-all duration-500 opacity-90 hover:opacity-100"
+                        class="w-full h-full opacity-90 hover:opacity-100 transition-opacity duration-300"
                         frameborder="0" 
                         scrolling="no">
                     </iframe>
@@ -249,219 +504,165 @@
             </div>
         </section>
 
-        <section id="panel-sistemas" class="panel panel-active h-full flex flex-col">
-            <div class="flex-1 overflow-y-auto pr-2 flex flex-col scroll-area">
-                <div id="sortable-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 pb-10 m-auto w-full max-w-[1600px] p-4">
-                    
-                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-blue/40" data-id="card-pr">
-                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-blue to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
-                        <div class="p-5 handle cursor-grab active:cursor-grabbing flex flex-col h-full">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
-                                <div class="flex items-center gap-3">
-                                    <i class="ph-duotone ph-map-pin text-brand-blue text-2xl"></i>
-                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Paraná</h2>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="text-[9px] font-mono text-brand-blue border border-brand-blue/30 px-1 rounded">SYS.01</div>
-                                    <i class="ph-bold ph-dots-six-vertical text-gray-400 dark:text-gray-600 cursor-grab"></i>
-                                </div>
-                            </div>
-                            <ul class="space-y-1.5 flex-1">
-                                <li><a href="https://pr.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-blue hover:text-brand-blue">NOTAS</a></li>
-                                <li><a href="https://pr.vizwise.com.br/protesto/open.do?action=open&sys=PRO" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-blue hover:text-brand-blue">PROTESTO</a></li>
-                                <li><a href="https://pr.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-blue hover:text-brand-blue">FINANCEIRO</a></li>
-                                <li><a href="https://pr.vizwise.com.br/rcpn/open.do?action=open&sys=RCP" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-blue hover:text-brand-blue">RCPN</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-green/40" data-id="card-ms">
-                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-green to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
-                        <div class="p-5 handle cursor-grab active:cursor-grabbing flex flex-col h-full">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
-                                <div class="flex items-center gap-3">
-                                    <i class="ph-duotone ph-map-pin text-brand-green text-2xl"></i>
-                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Mato Grosso</h2>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="text-[9px] font-mono text-brand-green border border-brand-green/30 px-1 rounded">SYS.02</div>
-                                    <i class="ph-bold ph-dots-six-vertical text-gray-400 dark:text-gray-600 cursor-grab"></i>
-                                </div>
-                            </div>
-                            <ul class="space-y-1.5 flex-1">
-                                <li><a href="https://ms.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-green hover:text-brand-green">NOTAS</a></li>
-                                <li><a href="https://ms.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-green hover:text-brand-green">FINANCEIRO</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-purple/40" data-id="card-mg">
-                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-purple to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
-                        <div class="p-5 handle cursor-grab active:cursor-grabbing flex flex-col h-full">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
-                                <div class="flex items-center gap-3">
-                                    <i class="ph-duotone ph-map-pin text-brand-purple text-2xl"></i>
-                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Minas Gerais</h2>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="text-[9px] font-mono text-brand-purple border border-brand-purple/30 px-1 rounded">SYS.03</div>
-                                    <i class="ph-bold ph-dots-six-vertical text-gray-400 dark:text-gray-600 cursor-grab"></i>
-                                </div>
-                            </div>
-                            <ul class="space-y-1.5 flex-1">
-                                <li><a href="https://mg.vizwise.com.br/notas/open.do?action=open&sys=NOT" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-purple hover:text-brand-purple">NOTAS</a></li>
-                                <li><a href="https://app.vizwise.com.br/financeiro/open.do?action=open&sys=FIN" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-purple hover:text-brand-purple">FINANCEIRO</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-red/40" data-id="card-ba-homol">
-                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-red to-transparent opacity-80 group-hover:opacity-100 transition-all"></div>
-                        <div class="p-5 handle cursor-grab active:cursor-grabbing flex flex-col h-full">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
-                                <div class="flex items-center gap-3">
-                                    <i class="ph-duotone ph-warning text-brand-red text-2xl"></i>
-                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">HMG Bahia</h2>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="text-[9px] font-mono text-brand-red border border-brand-red/30 px-1 rounded bg-brand-red/10">SYS.HMG</div>
-                                    <i class="ph-bold ph-dots-six-vertical text-gray-400 dark:text-gray-600 cursor-grab"></i>
-                                </div>
-                            </div>
-                            <ul class="space-y-1.5 flex-1">
-                                <li><a href="http://192.168.1.56/protestoba/open.do?sys=PRO" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-red hover:text-brand-red">PROTESTO BAHIA (NOVO)</a></li>
-                                <li><a href="http://192.168.1.56/spj/open.do?sys=SPJ" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-red hover:text-brand-red">SPJ (NOVO)</a></li>
-                                <li><a href="http://192.168.1.56/rtd/open.do?sys=RTD" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-red hover:text-brand-red">RTD (NOVO)</a></li>
-                                <li><a href="http://192.168.1.56/imoveis/open.do?sys=IMO" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-red hover:text-brand-red">IMÓVEIS (NOVO)</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-orange/40" data-id="card-ba">
-                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-orange to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
-                        <div class="p-5 handle cursor-grab active:cursor-grabbing flex flex-col h-full">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
-                                <div class="flex items-center gap-3">
-                                    <i class="ph-duotone ph-map-pin text-brand-orange text-2xl"></i>
-                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Bahia</h2>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="text-[9px] font-mono text-brand-orange border border-brand-orange/30 px-1 rounded">SYS.05</div>
-                                    <i class="ph-bold ph-dots-six-vertical text-gray-400 dark:text-gray-600 cursor-grab"></i>
-                                </div>
-                            </div>
-                            <ul class="space-y-1.5 flex-1">
-                                <li><a href="https://bahia.vizwise.com.br/notas/open.do?sys=NOT" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">NOTAS</a></li>
-                                <li><a href="https://bahia.vizwise.com.br/protesto/open.do?sys=PRO" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">PROTESTO</a></li>
-                                <li><a href="https://bahia.vizwise.com.br/financeiro/open.do?sys=FIN" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">FINANCEIRO</a></li>
-                                <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=IMO" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">IMÓVEIS</a></li>
-                                <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=SPJ" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">PJ</a></li>
-                                <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=RTD" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-orange hover:text-brand-orange">RTD</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-pink/40" data-id="card-links">
-                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-pink to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
-                        <div class="p-5 handle cursor-grab active:cursor-grabbing flex flex-col h-full">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
-                                <div class="flex items-center gap-3">
-                                    <i class="ph-duotone ph-link text-brand-pink text-2xl"></i>
-                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Links Úteis</h2>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="text-[9px] font-mono text-brand-pink border border-brand-pink/30 px-1 rounded">DB.01</div>
-                                    <i class="ph-bold ph-dots-six-vertical text-gray-400 dark:text-gray-600 cursor-grab"></i>
-                                </div>
-                            </div>
-                            <ul class="space-y-1.5 flex-1">
-                                <li><a href="https://drive.google.com/drive/folders/1WJykw18G3YTD0hMBs_oSLKY9AVr2p0Pg?usp=drive_link" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-pink hover:text-brand-pink">DEV_</a></li>
-                                <li><a href="https://drive.google.com/drive/folders/1_eNVuM0iw_4N6SSfI9F9a3b_cRUYL4yD?usp=sharing" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-pink hover:text-brand-pink">SUPORTE</a></li>
-                                <li><a href="https://docs.google.com/spreadsheets/d/1rOkWRdZIWi3x9gv0sy558I9aM_dZdaXTTsqinfVqDUY/edit?usp=drive_link" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-pink hover:text-brand-pink">PLANILHA LINKS</a></li>
-                                <li><a href="https://drive.google.com/drive/folders/1s1Bd4Qacp1LravulgEnUoMUsIVL38tWg?usp=drive_link" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-pink hover:text-brand-pink">MANUAIS</a></li>
-                                <li><a href="https://drive.google.com/drive/folders/1Uc9b5isCkuQRWmnf1x32CmoquiN6xe5L?usp=drive_link" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-pink hover:text-brand-pink">GRAVAÇÕES</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-cyan/40" data-id="card-dev">
-                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-cyan to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
-                        <div class="p-5 handle cursor-grab active:cursor-grabbing flex flex-col h-full">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
-                                <div class="flex items-center gap-3">
-                                    <i class="ph-duotone ph-code text-brand-cyan text-2xl"></i>
-                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Desenvolvedor</h2>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="text-[9px] font-mono text-brand-cyan border border-brand-cyan/30 px-1 rounded">DEV.01</div>
-                                    <i class="ph-bold ph-dots-six-vertical text-gray-400 dark:text-gray-600 cursor-grab"></i>
-                                </div>
-                            </div>
-                            <ul class="space-y-1.5 flex-1">
-                                <li><a href="http://192.168.1.56/git/" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-cyan hover:text-brand-cyan">GITEA (OFFLINE)</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="glass-card rounded-xl overflow-hidden group hover:border-brand-indigo/40" data-id="card-avulsos">
-                        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-brand-indigo to-transparent opacity-50 group-hover:opacity-100 transition-all"></div>
-                        <div class="p-5 handle cursor-grab active:cursor-grabbing flex flex-col h-full">
-                            <div class="flex items-center justify-between mb-4 border-b border-gray-200 dark:border-gray-700/30 pb-3">
-                                <div class="flex items-center gap-3">
-                                    <i class="ph-duotone ph-nut text-brand-indigo text-2xl"></i>
-                                    <h2 class="text-base font-bold text-gray-800 dark:text-white">Avulsos</h2>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="text-[9px] font-mono text-brand-indigo border border-brand-indigo/30 px-1 rounded">EXT.01</div>
-                                    <i class="ph-bold ph-dots-six-vertical text-gray-400 dark:text-gray-600 cursor-grab"></i>
-                                </div>
-                            </div>
-                            <ul class="space-y-1.5 flex-1">
-                                <li><a href="http://al.vizwise.com.br:3000" title="A senha para acesso está no drive." target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-indigo hover:text-brand-indigo">USO DO SERVIDOR</a></li>
-                                <li><a href="https://app.vizwise.com.br/servicos/open.do?sys=SER" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-indigo hover:text-brand-indigo">EMITIR CERTIDÃO</a></li>
-                                <li><a href="https://reg.vizwise.com.br/sistemas/open.do?sys=SOL" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-indigo hover:text-brand-indigo">GERENCIAMENTO</a></li>
-                                <li><a href="https://app.vizwise.com.br/senha/open.do?sys=SEN" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-indigo hover:text-brand-indigo">SENHAS</a></li>
-                                <li><a href="https://web.whatsapp.com/" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-indigo hover:text-brand-indigo">WHATSAPP</a></li>
-                                <li><a href="https://appchat.vizwise.com.br/#/atendimento" target="_blank" class="cyber-link-hover block px-3 py-2 rounded bg-gray-50/50 dark:bg-dark-950/40 text-xs text-gray-500 dark:text-gray-400 font-mono font-bold tracking-wide transition-all border-l-2 border-transparent hover:border-brand-indigo hover:text-brand-indigo">VIZCHAT</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
+    <!-- Lógica JavaScript Principal -->
     <script>
-        // --- Clock ---
-        const clockElement = document.getElementById('clock');
-        const dateElement = document.getElementById('date');
-        
+        // --- ALTERNÂNCIA DE TEMAS CLARO/ESCURO ---
+        const themeBtn = document.getElementById('btn-theme');
+        const themeIcon = document.getElementById('theme-icon');
+        const rootElement = document.documentElement;
+
+        function toggleTheme() {
+            const currentTheme = rootElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            rootElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('vizwise_theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            if (theme === 'light') {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        }
+
+        // Inicialização do Tema
+        const savedTheme = localStorage.getItem('vizwise_theme') || 'dark';
+        rootElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeBtn.addEventListener('click', toggleTheme);
+
+        // --- CONFIGURAÇÃO DA API DE BACKGROUND ---
+        const PRIMARY_API_URL = 'https://script.google.com/macros/s/AKfycbw9fKVGd6eD0TI-noB3DlXyIUAJKsobnQORSHD8f3UABByU5j_qOI_KlgThqvMzATFzFQ/exec';
+
+        const FALLBACK_IMAGES = [
+            'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1920&q=80',
+            'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1920&q=80',
+            'https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=1920&q=80'
+        ];
+
+        let activeBgLayer = 'current';
+        let currentImageIndex = 0;
+
+        // --- RELÓGIO EM TEMPO REAL ---
         function updateClock() {
             const now = new Date();
-            clockElement.innerText = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            dateElement.innerText = now.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' }).replace('.', '');
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock-time').textContent = `${hours}:${minutes}:${seconds}`;
+
+            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            document.getElementById('clock-date').textContent = now.toLocaleDateString('pt-BR', options);
         }
+
         setInterval(updateClock, 1000);
         updateClock();
 
-        // --- Search ---
+        // --- MUDANÇA SUAVE DO PLANO DE FUNDO ---
+        function setBackgroundImage(url, sourceLabel) {
+            const currentLayer = document.getElementById(`bg-${activeBgLayer}`);
+            const nextLayerId = activeBgLayer === 'current' ? 'next' : 'current';
+            const nextLayer = document.getElementById(`bg-${nextLayerId}`);
+
+            const imgPreloader = new Image();
+            imgPreloader.onload = () => {
+                nextLayer.style.backgroundImage = `url('${url}')`;
+                nextLayer.style.opacity = '1';
+                currentLayer.style.opacity = '0';
+                activeBgLayer = nextLayerId;
+
+                const bgStatus = document.getElementById('bg-status');
+                bgStatus.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> <span>${sourceLabel}</span>`;
+
+                stopLoadingSpinner();
+            };
+
+            imgPreloader.onerror = () => {
+                console.warn('Erro ao carregar a imagem informada. Usando fallback alternativo.');
+                useFallbackImage('Fallback Unsplash (Erro Imagem)');
+            };
+
+            imgPreloader.src = url;
+        }
+
+        async function fetchBackgroundImage() {
+            startLoadingSpinner();
+            
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+            try {
+                const cacheBuster = `?t=${new Date().getTime()}`;
+                const response = await fetch(PRIMARY_API_URL + cacheBuster, { 
+                    method: 'GET',
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+
+                if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+
+                const data = await response.json();
+
+                if (data && data.imageUrl) {
+                    setBackgroundImage(data.imageUrl, 'API Google');
+                } else {
+                    throw new Error('Propriedade imageUrl ausente');
+                }
+            } catch (error) {
+                console.warn('Falha na API do Google Apps Script:', error.message);
+                useFallbackImage('Unsplash HD');
+            }
+        }
+
+        function useFallbackImage(label) {
+            currentImageIndex = (currentImageIndex + 1) % FALLBACK_IMAGES.length;
+            const fallbackUrl = FALLBACK_IMAGES[currentImageIndex];
+            setBackgroundImage(fallbackUrl, label);
+        }
+
+        function startLoadingSpinner() {
+            document.getElementById('icon-refresh-bg').classList.add('spin-anim');
+        }
+
+        function stopLoadingSpinner() {
+            document.getElementById('icon-refresh-bg').classList.remove('spin-anim');
+        }
+
+        // --- BARRA DE PESQUISA ---
         const searchForm = document.getElementById('search-form');
-        const searchInput = document.getElementById('search-bar');
-        searchForm.addEventListener('submit', (e) => {
+        const searchInput = document.getElementById('search-input');
+
+        searchForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const query = searchInput.value.trim();
-            if (!query) return;
-            if (query.startsWith('http')) window.location.href = query;
-            else if (query.includes('.') && !query.includes(' ')) window.location.href = 'https://' + query;
-            else window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === '/' && document.activeElement !== searchInput) {
-                e.preventDefault(); searchInput.focus();
+            if (query) {
+                if (query.startsWith('http://') || query.startsWith('https://')) {
+                    window.location.href = query;
+                } else if (query.includes('.') && !query.includes(' ')) {
+                    window.location.href = 'https://' + query;
+                } else {
+                    window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                }
             }
         });
 
-        // --- Tabs Logic (Switch View) ---
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && document.activeElement !== searchInput) {
+                e.preventDefault();
+                searchInput.focus();
+            }
+        });
+
+        // --- ALTERNÂNCIA DE ABAS (SISTEMAS / AGENDA) ---
         const panelAgenda = document.getElementById('panel-agenda');
         const panelSistemas = document.getElementById('panel-sistemas');
         const btnAgenda = document.getElementById('tab-agenda-btn');
@@ -469,63 +670,23 @@
 
         function switchTab(tabName) {
             if (tabName === 'agenda') {
-                // Show Agenda
-                panelAgenda.classList.remove('panel-inactive');
-                panelAgenda.classList.add('panel-active');
-                
-                // Hide Sistemas
-                panelSistemas.classList.remove('panel-active');
-                panelSistemas.classList.add('panel-inactive');
-                
-                // Buttons
-                btnAgenda.classList.add('active-tab-agenda');
-                btnSistemas.classList.remove('active-tab-sistemas');
-                
+                panelAgenda.classList.replace('panel-inactive', 'panel-active');
+                panelSistemas.classList.replace('panel-active', 'panel-inactive');
+                btnAgenda.classList.add('active-tab');
+                btnSistemas.classList.remove('active-tab');
             } else {
-                // Show Sistemas
-                panelSistemas.classList.remove('panel-inactive');
-                panelSistemas.classList.add('panel-active');
-
-                // Hide Agenda
-                panelAgenda.classList.remove('panel-active');
-                panelAgenda.classList.add('panel-inactive');
-
-                // Buttons
-                btnSistemas.classList.add('active-tab-sistemas');
-                btnAgenda.classList.remove('active-tab-agenda');
+                panelSistemas.classList.replace('panel-inactive', 'panel-active');
+                panelAgenda.classList.replace('panel-active', 'panel-inactive');
+                btnSistemas.classList.add('active-tab');
+                btnAgenda.classList.remove('active-tab');
             }
-            
-            // Persist
             localStorage.setItem('vizwise_active_tab', tabName);
         }
 
-        // Initialize Tab
-        const savedTab = localStorage.getItem('vizwise_active_tab') || 'sistemas'; // Default to Sistemas
+        const savedTab = localStorage.getItem('vizwise_active_tab') || 'sistemas';
         switchTab(savedTab);
 
-
-        // --- Theme ---
-        const themeBtn = document.getElementById('theme-toggle-btn');
-        const themeIcon = document.getElementById('theme-icon');
-        const html = document.documentElement;
-
-        function updateThemeIcon(isDark) {
-            themeIcon.className = isDark ? 'ph-duotone ph-moon text-lg' : 'ph-duotone ph-sun text-lg';
-        }
-
-        function toggleTheme() {
-            const isDark = html.classList.toggle('dark');
-            localStorage.setItem('vizwise_theme', isDark ? 'dark' : 'light');
-            updateThemeIcon(isDark);
-        }
-
-        const savedTheme = localStorage.getItem('vizwise_theme');
-        if (savedTheme === 'light') { html.classList.remove('dark'); updateThemeIcon(false); }
-        else { html.classList.add('dark'); updateThemeIcon(true); }
-
-        themeBtn.addEventListener('click', toggleTheme);
-
-        // --- Sortable ---
+        // --- ORDENAÇÃO DOS CARDS (SORTABLEJS) ---
         new Sortable(document.getElementById('sortable-grid'), {
             animation: 150,
             ghostClass: 'opacity-50',
@@ -541,6 +702,22 @@
                 }
             }
         });
+
+        // --- EVENT LISTENERS DOS BOTÕES DO CABEÇALHO ---
+        document.getElementById('btn-refresh-bg').addEventListener('click', fetchBackgroundImage);
+
+        document.getElementById('btn-fullscreen').addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Erro: ${err.message}`);
+                });
+            } else if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        });
+
+        // --- INICIALIZAÇÃO DA PÁGINA ---
+        window.addEventListener('load', fetchBackgroundImage);
     </script>
 </body>
 </html>
